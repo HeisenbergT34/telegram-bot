@@ -408,7 +408,7 @@ class CustomMessageHandler:
                 "3. Use private messaging for sharing links"
             )
                 
-                return False, ""
+            return False, ""
 
     async def moderate_message(self, message: Message) -> tuple[bool, str]:
         """
