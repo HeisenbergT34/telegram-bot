@@ -1,0 +1,280 @@
+{
+    "category": "database",
+    "questions": [
+        {
+            "question": "What is database normalization?",
+            "options": [
+                "Speeding up queries",
+                "Making databases normal",
+                "Organizing data to reduce redundancy",
+                "Backing up databases"
+            ],
+            "correct": 2,
+            "explanation": "Database normalization is the process of organizing data to reduce redundancy and improve data integrity."
+        },
+        {
+            "question": "What is a primary key?",
+            "options": [
+                "A unique identifier for each record",
+                "The most important data",
+                "A password for the database",
+                "The first column in a table"
+            ],
+            "correct": 0,
+            "explanation": "A primary key is a column or set of columns that uniquely identifies each row in a table."
+        },
+        {
+            "question": "What is a foreign key?",
+            "options": [
+                "An encryption key",
+                "A backup key",
+                "A key from another country",
+                "A reference to a primary key in another table"
+            ],
+            "correct": 3,
+            "explanation": "A foreign key is a column that creates a relationship between two tables by referencing a primary key."
+        },
+        {
+            "question": "What is an index in a database?",
+            "options": [
+                "A list of tables",
+                "A type of key",
+                "A data structure to improve query performance",
+                "A table of contents"
+            ],
+            "correct": 2,
+            "explanation": "An index is a data structure that improves the speed of data retrieval operations on database tables."
+        },
+        {
+            "question": "What is ACID in database transactions?",
+            "options": [
+                "A security protocol",
+                "A type of database",
+                "A backup strategy",
+                "Atomicity, Consistency, Isolation, Durability"
+            ],
+            "correct": 3,
+            "explanation": "ACID represents the four key properties that guarantee reliable processing of database transactions."
+        },
+        {
+            "question": "What is a JOIN in SQL?",
+            "options": [
+                "A way to combine rows from two or more tables",
+                "A way to split tables",
+                "A way to create tables",
+                "A way to delete data"
+            ],
+            "correct": 0,
+            "explanation": "JOIN is used to combine rows from two or more tables based on a related column between them."
+        },
+        {
+            "question": "What is the difference between INNER and LEFT JOIN?",
+            "options": [
+                "No difference",
+                "INNER returns matches only, LEFT keeps all left table records",
+                "LEFT returns matches only, INNER keeps all records",
+                "Both keep all records"
+            ],
+            "correct": 1,
+            "explanation": "INNER JOIN returns only matching records, while LEFT JOIN keeps all records from the left table."
+        },
+        {
+            "question": "What is a stored procedure?",
+            "options": [
+                "A way to store data",
+                "A precompiled SQL code that can be saved and reused",
+                "A backup procedure",
+                "A type of table"
+            ],
+            "correct": 1,
+            "explanation": "A stored procedure is a prepared SQL code that can be saved and reused multiple times."
+        },
+        {
+            "question": "What is a trigger in a database?",
+            "options": [
+                "A type of key",
+                "Code that automatically executes in response to events",
+                "A way to start the database",
+                "A type of query"
+            ],
+            "correct": 1,
+            "explanation": "A trigger is a special type of stored procedure that automatically executes when specific events occur."
+        },
+        {
+            "question": "What is a view in SQL?",
+            "options": [
+                "A graphical interface",
+                "A virtual table based on a SELECT query",
+                "A type of index",
+                "A backup copy"
+            ],
+            "correct": 1,
+            "explanation": "A view is a virtual table based on the result set of an SQL statement, providing a way to simplify complex queries."
+        },
+        {
+            "question": "What is database sharding?",
+            "options": [
+                "Breaking a database",
+                "Splitting data across multiple databases",
+                "Merging databases",
+                "Backing up databases"
+            ],
+            "correct": 1,
+            "explanation": "Sharding is splitting a database horizontally across multiple servers to improve scalability and performance."
+        },
+        {
+            "question": "What is the difference between DELETE and TRUNCATE?",
+            "options": [
+                "They are the same",
+                "DELETE can be filtered and rolled back, TRUNCATE removes all data and can't be rolled back",
+                "TRUNCATE can be filtered, DELETE cannot",
+                "Both can be rolled back"
+            ],
+            "correct": 1,
+            "explanation": "DELETE removes specific rows and can be rolled back, while TRUNCATE removes all rows and cannot be rolled back."
+        },
+        {
+            "question": "What is an ERD (Entity Relationship Diagram)?",
+            "options": [
+                "A type of database",
+                "A visual representation of database relationships",
+                "A query language",
+                "A backup system"
+            ],
+            "correct": 1,
+            "explanation": "An ERD is a diagram that shows the relationships between entities (tables) in a database."
+        },
+        {
+            "question": "What is database replication?",
+            "options": [
+                "Copying a database",
+                "Maintaining copies of a database for redundancy and scaling",
+                "Deleting a database",
+                "Merging databases"
+            ],
+            "correct": 1,
+            "explanation": "Database replication is the process of maintaining multiple copies of data for redundancy and improved performance."
+        },
+        {
+            "question": "What is a deadlock in databases?",
+            "options": [
+                "When a database crashes",
+                "When two transactions block each other waiting for resources",
+                "When queries are too slow",
+                "When data is corrupted"
+            ],
+            "correct": 1,
+            "explanation": "A deadlock occurs when two or more transactions are waiting for each other to release resources."
+        },
+        {
+            "question": "What is a composite key in a database?",
+            "options": [
+                "A key made of metal",
+                "A combination of two or more columns that uniquely identify a row",
+                "A backup key",
+                "A type of foreign key"
+            ],
+            "correct": 1,
+            "explanation": "A composite key is a primary key that consists of multiple columns combined to uniquely identify records."
+        },
+        {
+            "question": "What is the purpose of an SQL HAVING clause?",
+            "options": [
+                "To filter groups based on aggregate conditions",
+                "To join tables",
+                "To sort results",
+                "To update records"
+            ],
+            "correct": 0,
+            "explanation": "HAVING is used to filter groups based on aggregate functions, unlike WHERE which filters individual rows."
+        },
+        {
+            "question": "What is database partitioning?",
+            "options": [
+                "Creating database backups",
+                "Deleting database tables",
+                "Dividing tables or databases into smaller, more manageable pieces",
+                "Merging multiple databases"
+            ],
+            "correct": 2,
+            "explanation": "Partitioning involves breaking large tables into smaller, more manageable pieces while maintaining data integrity."
+        },
+        {
+            "question": "What is the purpose of the COALESCE function?",
+            "options": [
+                "To join tables",
+                "To delete null values",
+                "To create indexes",
+                "To return the first non-null value in a list"
+            ],
+            "correct": 3,
+            "explanation": "COALESCE returns the first non-null value in a list of expressions, useful for handling null values."
+        },
+        {
+            "question": "What is a materialized view?",
+            "options": [
+                "A view that stores its results physically",
+                "A temporary view",
+                "A view of material objects",
+                "A virtual table"
+            ],
+            "correct": 0,
+            "explanation": "A materialized view physically stores the query results, unlike regular views which compute results on demand."
+        },
+        {
+            "question": "What is the purpose of the EXPLAIN command?",
+            "options": [
+                "To document database design",
+                "To show table structure",
+                "To show how the database executes a query",
+                "To explain error messages"
+            ],
+            "correct": 2,
+            "explanation": "EXPLAIN shows the query execution plan, helping optimize database performance."
+        },
+        {
+            "question": "What is database connection pooling?",
+            "options": [
+                "Creating multiple databases",
+                "Managing network connections",
+                "Collecting database statistics",
+                "Maintaining a cache of database connections for reuse"
+            ],
+            "correct": 3,
+            "explanation": "Connection pooling improves performance by reusing database connections instead of creating new ones."
+        },
+        {
+            "question": "What is a self-join?",
+            "options": [
+                "A table joined with itself",
+                "An automatic join",
+                "A join without conditions",
+                "A join between primary keys"
+            ],
+            "correct": 0,
+            "explanation": "A self-join is when a table is joined with itself, often used for hierarchical or self-referential data."
+        },
+        {
+            "question": "What is the purpose of the VACUUM command in PostgreSQL?",
+            "options": [
+                "To clean the database server",
+                "To compress tables",
+                "To reclaim storage and update statistics",
+                "To remove all data"
+            ],
+            "correct": 2,
+            "explanation": "VACUUM reclaims storage from deleted tuples and updates statistics used by the query planner."
+        },
+        {
+            "question": "What is database mirroring?",
+            "options": [
+                "Creating database backups",
+                "Copying data between tables",
+                "Setting up redundant databases",
+                "A high-availability solution that maintains a copy of the database"
+            ],
+            "correct": 3,
+            "explanation": "Database mirroring maintains a redundant copy of a database for high availability and disaster recovery."
+        }
+    ]
+} 

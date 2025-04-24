@@ -1,0 +1,46 @@
+{
+    "programming": [
+        {
+            "title": "Code Documentation",
+            "tip": "Write documentation as you code, not after. It's easier to document your thoughts while they're fresh.",
+            "category": "best_practices"
+        },
+        {
+            "title": "Variable Naming",
+            "tip": "Use descriptive variable names. 'user_count' is better than 'uc' or 'x'.",
+            "category": "clean_code"
+        },
+        {
+            "title": "Error Handling",
+            "tip": "Always catch specific exceptions rather than using a bare except clause. This makes debugging easier.",
+            "category": "debugging"
+        },
+        {
+            "title": "Code Review",
+            "tip": "Review your own code before submitting it for review. Often you'll spot obvious mistakes.",
+            "category": "best_practices"
+        }
+    ],
+    "security": [
+        {
+            "title": "Password Storage",
+            "tip": "Never store passwords in plain text. Always use strong hashing algorithms like bcrypt.",
+            "category": "authentication"
+        },
+        {
+            "title": "Input Validation",
+            "tip": "Always validate and sanitize user input on both client and server side.",
+            "category": "web_security"
+        },
+        {
+            "title": "API Security",
+            "tip": "Use rate limiting on your APIs to prevent abuse and DDoS attacks.",
+            "category": "api"
+        },
+        {
+            "title": "Security Headers",
+            "tip": "Implement security headers like CSP, HSTS, and X-Frame-Options to protect against common web attacks.",
+            "category": "web_security"
+        }
+    ]
+} 

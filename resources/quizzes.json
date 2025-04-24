@@ -1,0 +1,154 @@
+{
+    "programming": [
+        {
+            "id": "prog_quiz_1",
+            "question": "What is the output of 'print(2 ** 3)' in Python?",
+            "options": ["8", "6", "9", "16"],
+            "correct": "8",
+            "explanation": "The ** operator in Python represents exponentiation. 2 ** 3 means 2 raised to the power of 3.",
+            "points": 5,
+            "difficulty": "easy",
+            "hint": "Think about what ** means in Python - it's related to powers.",
+            "category": "python_basics",
+            "tags": ["operators", "arithmetic", "basics"]
+        },
+        {
+            "id": "prog_quiz_2",
+            "question": "Which data structures use LIFO (Last In, First Out)? Select all that apply.",
+            "options": ["Queue", "Stack", "Call Stack", "Memory Stack"],
+            "correct": ["Stack", "Call Stack", "Memory Stack"],
+            "explanation": "LIFO principle is used in various stack implementations, including the program call stack and memory stack.",
+            "points": 10,
+            "difficulty": "medium",
+            "multiple_answers": true,
+            "hint": "Think about how function calls are managed in programming.",
+            "category": "data_structures",
+            "tags": ["stack", "memory", "concepts"]
+        }
+    ],
+    "security": [
+        {
+            "id": "sec_quiz_1",
+            "question": "What are the benefits of HTTPS? Select all that apply.",
+            "options": [
+                "Data encryption",
+                "Server authentication",
+                "Data compression",
+                "Data integrity"
+            ],
+            "correct": ["Data encryption", "Server authentication", "Data integrity"],
+            "explanation": "HTTPS provides encryption, server authentication through certificates, and ensures data integrity. It does not handle compression.",
+            "points": 10,
+            "difficulty": "medium",
+            "multiple_answers": true,
+            "hint": "Think about the 'S' in HTTPS and what security means.",
+            "category": "web_security",
+            "tags": ["https", "encryption", "security"]
+        },
+        {
+            "id": "sec_quiz_2",
+            "question": "Which of these is NOT a common password hashing algorithm?",
+            "options": ["MD5", "BCrypt", "XORCrypt", "Argon2"],
+            "correct": "XORCrypt",
+            "explanation": "XORCrypt is not a real password hashing algorithm. The others are commonly used for password hashing.",
+            "points": 10,
+            "difficulty": "medium"
+        }
+    ],
+    "networking": [
+        {
+            "id": "net_quiz_1",
+            "question": "Match the protocol with its default port:",
+            "options": [
+                "HTTP - 80",
+                "HTTPS - 443",
+                "FTP - 21",
+                "SSH - 22"
+            ],
+            "correct": ["HTTP - 80", "HTTPS - 443", "FTP - 21", "SSH - 22"],
+            "explanation": "These are the standard default ports for common internet protocols.",
+            "points": 15,
+            "difficulty": "medium",
+            "multiple_answers": true,
+            "hint": "These are standard ports defined by IANA.",
+            "category": "protocols",
+            "tags": ["ports", "protocols", "standards"]
+        },
+        {
+            "id": "net_quiz_2",
+            "question": "Which protocol is connectionless?",
+            "options": ["UDP", "TCP", "HTTP", "FTP"],
+            "correct": "UDP",
+            "explanation": "UDP (User Datagram Protocol) is connectionless, meaning it doesn't establish a connection before sending data.",
+            "points": 10,
+            "difficulty": "medium"
+        }
+    ],
+    "databases": [
+        {
+            "id": "db_quiz_1",
+            "question": "Which statements about SQL JOINs are true? Select all that apply.",
+            "options": [
+                "INNER JOIN returns only matching records",
+                "LEFT JOIN includes all records from the left table",
+                "RIGHT JOIN is the same as LEFT JOIN with tables swapped",
+                "FULL JOIN returns all records when there is a match in either table"
+            ],
+            "correct": [
+                "INNER JOIN returns only matching records",
+                "LEFT JOIN includes all records from the left table",
+                "RIGHT JOIN is the same as LEFT JOIN with tables swapped",
+                "FULL JOIN returns all records when there is a match in either table"
+            ],
+            "explanation": "All these statements about SQL JOINs are correct. Understanding different JOIN types is crucial for database operations.",
+            "points": 20,
+            "difficulty": "hard",
+            "multiple_answers": true,
+            "hint": "Think about Venn diagrams to visualize JOIN operations.",
+            "category": "sql",
+            "tags": ["joins", "sql", "database_operations"]
+        },
+        {
+            "id": "db_quiz_2",
+            "question": "Which type of JOIN returns all matching records from both tables?",
+            "options": ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL JOIN"],
+            "correct": "INNER JOIN",
+            "explanation": "INNER JOIN returns only the matching records from both tables.",
+            "points": 10,
+            "difficulty": "medium"
+        }
+    ],
+    "algorithms": [
+        {
+            "id": "algo_quiz_1",
+            "question": "Which statements about time complexity are correct? Select all that apply.",
+            "options": [
+                "O(1) is constant time",
+                "O(n) is linear time",
+                "O(n²) is always worse than O(n log n)",
+                "O(log n) is typically better than O(n)"
+            ],
+            "correct": [
+                "O(1) is constant time",
+                "O(n) is linear time",
+                "O(log n) is typically better than O(n)"
+            ],
+            "explanation": "Time complexity helps us understand algorithm efficiency. O(n²) is not always worse than O(n log n) for small n.",
+            "points": 15,
+            "difficulty": "hard",
+            "multiple_answers": true,
+            "hint": "Consider how the runtime grows with input size n.",
+            "category": "complexity",
+            "tags": ["big_o", "time_complexity", "algorithm_analysis"]
+        },
+        {
+            "id": "algo_quiz_2",
+            "question": "Which sorting algorithm has the best average case time complexity?",
+            "options": ["Quick Sort", "Bubble Sort", "Selection Sort", "Insertion Sort"],
+            "correct": "Quick Sort",
+            "explanation": "Quick Sort has an average time complexity of O(n log n) and is generally faster in practice.",
+            "points": 10,
+            "difficulty": "medium"
+        }
+    ]
+} 

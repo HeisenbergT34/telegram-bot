@@ -1,0 +1,1327 @@
+"""
+K-Tech Somali Bot - A Telegram bot for managing tech learning communities.
+"""
+import logging
+import asyncio
+import sqlite3
+import json
+import re
+import os
+import sys
+import signal
+import random
+from datetime import datetime, timedelta
+from collections import defaultdict
+from urllib.parse import urlparse
+import html
+import tempfile
+from PIL import Image
+import pytesseract
+from PIL import ImageEnhance
+
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery
+from telegram.ext import (
+    Application, CommandHandler, MessageHandler, filters,
+    ContextTypes, CallbackQueryHandler, ChatMemberHandler
+)
+from telegram.constants import ParseMode
+from telegram.error import TelegramError, RetryAfter
+from telegram.request import HTTPXRequest
+import telegram
+
+import config
+
+# Set up logging
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
+# Add handler to also log to a file
+file_handler = logging.FileHandler('bot.log')
+file_handler.setFormatter(logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+logger.addHandler(file_handler)
+
+class DatabaseManager:
+    """Manage database operations."""
+    
+    def __init__(self):
+        """Initialize database connection."""
+        self.conn = sqlite3.connect('bot.db')
+        self.cursor = self.conn.cursor()
+        self.setup_database()
+    
+    def setup_database(self):
+        """Create necessary tables if they don't exist."""
+        # User points and progress
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS user_points (
+                user_id INTEGER PRIMARY KEY,
+                points INTEGER DEFAULT 0,
+                last_updated TIMESTAMP,
+                completed_challenges TEXT DEFAULT '[]'
+            )
+        ''')
+        
+        # Challenge tracking
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS challenge_progress (
+                user_id INTEGER,
+                challenge_id TEXT,
+                category TEXT,
+                difficulty TEXT,
+                completed BOOLEAN DEFAULT FALSE,
+                completion_date TIMESTAMP,
+                PRIMARY KEY (user_id, challenge_id)
+            )
+        ''')
+        
+        # Translation cache
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS translation_cache (
+                original_text TEXT PRIMARY KEY,
+                translated_text TEXT,
+                language TEXT,
+                timestamp TIMESTAMP
+            )
+        ''')
+        
+        # Group management
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS group_settings (
+                group_id INTEGER PRIMARY KEY,
+                welcome_message TEXT,
+                rules TEXT,
+                spam_protection BOOLEAN DEFAULT TRUE,
+                link_filter BOOLEAN DEFAULT TRUE
+            )
+        ''')
+        
+        # User warnings
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS user_warnings (
+                user_id INTEGER,
+                group_id INTEGER,
+                warning_count INTEGER DEFAULT 0,
+                last_warning TIMESTAMP,
+                reason TEXT,
+                PRIMARY KEY (user_id, group_id)
+            )
+        ''')
+        
+        self.conn.commit()
+    
+    def get_user_progress(self, user_id: int) -> dict:
+        """Get user's challenge progress."""
+        self.cursor.execute(
+            "SELECT completed_challenges FROM user_points WHERE user_id = ?",
+            (user_id,)
+        )
+        result = self.cursor.fetchone()
+        if result:
+            return json.loads(result[0])
+        return []
+    
+    def update_challenge_progress(self, user_id: int, challenge_id: str, 
+                                category: str, difficulty: str, completed: bool = True):
+        """Update user's challenge progress."""
+        timestamp = datetime.now().isoformat()
+        self.cursor.execute('''
+            INSERT OR REPLACE INTO challenge_progress 
+            (user_id, challenge_id, category, difficulty, completed, completion_date)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (user_id, challenge_id, category, difficulty, completed, timestamp))
+        self.conn.commit()
+    
+    def get_translation(self, text: str, language: str = 'so') -> str:
+        """Get cached translation if available."""
+        self.cursor.execute(
+            "SELECT translated_text FROM translation_cache WHERE original_text = ? AND language = ?",
+            (text, language)
+        )
+        result = self.cursor.fetchone()
+        return result[0] if result else None
+    
+    def cache_translation(self, original: str, translated: str, language: str = 'so'):
+        """Cache a translation."""
+        timestamp = datetime.now().isoformat()
+        self.cursor.execute('''
+            INSERT OR REPLACE INTO translation_cache 
+            (original_text, translated_text, language, timestamp)
+            VALUES (?, ?, ?, ?)
+        ''', (original, translated, language, timestamp))
+        self.conn.commit()
+    
+    def add_warning(self, user_id: int, group_id: int, reason: str):
+        """Add a warning for a user in a group."""
+        self.cursor.execute('''
+            INSERT INTO user_warnings (user_id, group_id, warning_count, last_warning, reason)
+            VALUES (?, ?, 1, ?, ?)
+            ON CONFLICT (user_id, group_id) DO UPDATE SET
+            warning_count = warning_count + 1,
+            last_warning = excluded.last_warning,
+            reason = excluded.reason
+        ''', (user_id, group_id, datetime.now().isoformat(), reason))
+        self.conn.commit()
+    
+    def get_warnings(self, user_id: int, group_id: int) -> int:
+        """Get number of warnings for a user in a group."""
+        self.cursor.execute(
+            "SELECT warning_count FROM user_warnings WHERE user_id = ? AND group_id = ?",
+            (user_id, group_id)
+        )
+        result = self.cursor.fetchone()
+        return result[0] if result else 0
+
+class CustomMessageHandler:
+    """Handle message processing and moderation."""
+    
+    def __init__(self, db_manager: DatabaseManager):
+        self.user_message_counts = defaultdict(list)
+        self.db_manager = db_manager
+        self.link_pattern = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
+
+    def check_spam(self, user_id: int, message_time: datetime) -> bool:
+        """Check if user is spamming."""
+        self.user_message_counts[user_id] = [
+            time for time in self.user_message_counts[user_id]
+            if (message_time - time).total_seconds() < 60
+        ]
+        self.user_message_counts[user_id].append(message_time)
+        return len(self.user_message_counts[user_id]) > config.MAX_MESSAGES_PER_MINUTE
+
+    def check_links(self, text: str) -> tuple[bool, str]:
+        """Check for unauthorized links."""
+        if not text:
+            return False, ""
+            
+        links = self.link_pattern.findall(text)
+        for link in links:
+            try:
+                parsed = urlparse(link)
+                if not parsed.scheme.startswith('https'):
+                    return True, "⚠️ Only HTTPS links are allowed for security."
+                if parsed.netloc in config.BLOCKED_DOMAINS:
+                    return True, "⚠️ This domain is not allowed."
+            except Exception:
+                continue
+        return False, ""
+
+    async def moderate_message(self, message: Message, context: ContextTypes.DEFAULT_TYPE) -> tuple[bool, str]:
+        """Moderate a message. Returns (should_delete, warning_message)."""
+        try:
+            if message.chat.type == 'private':
+                return False, ""
+
+            warning_message = ""
+            should_delete = False
+
+            # Check for spam
+            if self.check_spam(message.from_user.id, message.date):
+                should_delete = True
+                warning_message = "⚠️ Please slow down! You're sending messages too quickly."
+                self.db_manager.add_warning(
+                    message.from_user.id,
+                    message.chat.id,
+                    "Spam detection"
+                )
+
+            # Check links
+            has_bad_link, link_warning = self.check_links(message.text)
+            if has_bad_link:
+                should_delete = True
+                warning_message = link_warning
+                self.db_manager.add_warning(
+                    message.from_user.id,
+                    message.chat.id,
+                    "Unauthorized link"
+                )
+
+            # Check warning count
+            warning_count = self.db_manager.get_warnings(
+                message.from_user.id,
+                message.chat.id
+            )
+            if warning_count >= config.MAX_WARNINGS:
+                try:
+                    await context.bot.ban_chat_member(
+                        message.chat.id,
+                        message.from_user.id,
+                        until_date=datetime.now() + timedelta(hours=24)
+                    )
+                    warning_message = f"User has been banned for 24 hours due to multiple warnings."
+                except Exception as e:
+                    logger.error(f"Failed to ban user: {e}")
+
+            return should_delete, warning_message
+        except Exception as e:
+            logger.error(f"Error in message moderation: {e}")
+            return False, ""
+
+class TelegramBot:
+    """Main bot class."""
+    
+    def __init__(self, token: str):
+        """Initialize the bot."""
+        self.token = token
+        self.application = (
+            Application.builder()
+            .token(token)
+            .get_updates_request(HTTPXRequest(
+                connection_pool_size=8,
+                read_timeout=30.0
+            ))
+            .build()
+        )
+        self.db_manager = DatabaseManager()
+        self.msg_handler = CustomMessageHandler(self.db_manager)
+        
+        # Configure Tesseract path - adjust this path based on your system
+        if os.name == 'nt':  # Windows
+            pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+        # On Linux/Mac, Tesseract should be in PATH
+        
+        logger.info("Bot initialized with database-backed challenge tracking")
+        self.setup_handlers()
+
+    def setup_handlers(self):
+        """Set up command and message handlers."""
+        # Command handlers
+        self.application.add_handler(CommandHandler("start", self.start_command))
+        self.application.add_handler(CommandHandler("help", self.help_command))
+        self.application.add_handler(CommandHandler("challenge", self.challenge_command))
+        self.application.add_handler(CommandHandler("quiz", self.quiz_command))
+        self.application.add_handler(CommandHandler("resources", self.resources_command))
+        self.application.add_handler(CommandHandler("tip", self.tip_command))
+        self.application.add_handler(CommandHandler("points", self.points_command))
+        self.application.add_handler(CommandHandler("leaderboard", self.leaderboard_command))
+        self.application.add_handler(CommandHandler("cancel", self.cancel_command))
+
+        # Message handlers
+        self.application.add_handler(MessageHandler(
+            filters.TEXT & ~filters.COMMAND,
+            self.handle_message
+        ))
+        
+        # Photo handler for OCR
+        self.application.add_handler(MessageHandler(
+            filters.PHOTO,
+            self.handle_photo
+        ))
+        
+        # Callback query handler
+        self.application.add_handler(CallbackQueryHandler(self.handle_button))
+
+        # Error handler
+        self.application.add_error_handler(self.error_handler)
+
+    async def start(self):
+        """Start the bot."""
+        try:
+            # Initialize and start the application
+            await self.application.initialize()
+            await self.application.start()
+            
+            # Delete webhook and drop pending updates
+            await self.application.bot.delete_webhook(drop_pending_updates=True)
+            
+            # Start polling with clean start
+            await self.application.updater.start_polling(
+                drop_pending_updates=True,
+                allowed_updates=Update.ALL_TYPES
+            )
+            
+            # Create stop event
+            stop_event = asyncio.Event()
+            
+            def signal_handler(sig, frame):
+                """Handle shutdown signals."""
+                logger.info("Received shutdown signal")
+                stop_event.set()
+            
+            # Set up signal handlers
+            for sig in (signal.SIGINT, signal.SIGTERM):
+                signal.signal(sig, signal_handler)
+            
+            logger.info("Bot is running. Press Ctrl+C to stop")
+            await stop_event.wait()
+            
+        except Exception as e:
+            logger.error(f"Bot stopped due to error: {e}", exc_info=True)
+            raise
+        finally:
+            # Ensure proper cleanup
+            try:
+                logger.info("Shutting down...")
+                if hasattr(self.application, 'updater') and self.application.updater.running:
+                    await self.application.updater.stop()
+                if hasattr(self.application, 'stop'):
+                    await self.application.stop()
+                if hasattr(self.application, 'shutdown'):
+                    await self.application.shutdown()
+                logger.info("Bot stopped gracefully")
+            except Exception as e:
+                logger.error(f"Error during shutdown: {e}", exc_info=True)
+
+    async def error_handler(self, update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
+        """Handle errors in the dispatcher."""
+        logger.error("Exception while handling an update:", exc_info=context.error)
+        
+        error_msg = str(context.error)
+        
+        if isinstance(context.error, RetryAfter):
+            logger.info(f"Rate limit hit. Sleeping for {context.error.retry_after} seconds")
+            await asyncio.sleep(context.error.retry_after)
+        elif isinstance(context.error, TelegramError):
+            logger.error(f"Telegram API Error: {error_msg}")
+        else:
+            logger.error(f"Unknown error: {error_msg}")
+
+    async def start_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /start command."""
+        welcome_text = (
+            "👋 Welcome to K-Tech Somali Bot!\n\n"
+            "I'm here to help you learn and grow in technology.\n\n"
+            "Use /help to see what I can do!"
+        )
+        await update.message.reply_text(welcome_text)
+
+    async def help_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Show help information."""
+        help_text = (
+            "🤖 *K-Tech Somali Bot Commands*\n\n"
+            "*Learning Resources*\n"
+            "/resources - Access learning materials\n"
+            "/tip - Get a random tech tip\n"
+            "/challenge - Get a coding challenge\n\n"
+            "*Interactive Features*\n"
+            "/quiz - Take a quiz\n"
+            "/points - Check your points\n"
+            "/leaderboard - View top performers\n\n"
+            "*Group Management*\n"
+            "/groupinfo - Get group information"
+        )
+        await update.message.reply_text(help_text, parse_mode=ParseMode.MARKDOWN)
+
+    async def challenge_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Send a coding challenge."""
+        try:
+            # First, show category selection
+            keyboard = []
+            for category, name in config.CHALLENGE_CATEGORIES.items():
+                keyboard.append([
+                    InlineKeyboardButton(
+                        name,
+                        callback_data=f"challenge_category_{category}"
+                    )
+                ])
+            
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            await update.message.reply_text(
+                "🎯 *Choose a Challenge Category:*\n\n"
+                "Select the type of challenge you'd like to try:",
+                reply_markup=reply_markup,
+                parse_mode=ParseMode.MARKDOWN
+            )
+        except Exception as e:
+            logger.error(f"Error showing challenge categories: {e}")
+            await update.message.reply_text(
+                "Sorry, couldn't load challenges right now. Please try again later."
+            )
+
+    async def resources_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /resources command."""
+        try:
+            with open('resources/learning_resources.json', 'r', encoding='utf-8') as f:
+                resources = json.load(f)
+            
+            categories = list(resources.keys())
+            keyboard = []
+            for category in categories:
+                keyboard.append([InlineKeyboardButton(category, callback_data=f"resource_{category}")])
+            
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            await update.message.reply_text(
+                "📚 *Learning Resources*\n\n"
+                "Choose a category to explore:",
+                reply_markup=reply_markup,
+                parse_mode=ParseMode.MARKDOWN
+            )
+        except Exception as e:
+            logger.error(f"Error in resources command: {e}")
+            await update.message.reply_text(
+                "Sorry, couldn't load resources right now. Please try again later."
+            )
+
+    async def tip_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Send a random tech tip."""
+        try:
+            with open('resources/tips.json', 'r', encoding='utf-8') as f:
+                tips = json.load(f)
+            
+            if tips:
+                tip = random.choice(tips)
+                message = (
+                    f"💡 *Tech Tip*\n\n"
+                    f"{tip['content']}\n\n"
+                    f"*Category:* {tip['category']}"
+                )
+                await update.message.reply_text(message, parse_mode=ParseMode.MARKDOWN)
+            else:
+                await update.message.reply_text("No tips available at the moment.")
+        except Exception as e:
+            logger.error(f"Error in tip command: {e}")
+            await update.message.reply_text(
+                "Sorry, couldn't load tips right now. Please try again later."
+            )
+
+    async def quiz_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Start a quiz."""
+        try:
+            with open('resources/quizzes.json', 'r', encoding='utf-8') as f:
+                quizzes = json.load(f)
+            
+            categories = list(quizzes.keys())
+            keyboard = []
+            for category in categories:
+                keyboard.append([InlineKeyboardButton(category, callback_data=f"quiz_{category}")])
+            
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            await update.message.reply_text(
+                "🎯 *Quiz Time!*\n\n"
+                "Choose a category:",
+                reply_markup=reply_markup,
+                parse_mode=ParseMode.MARKDOWN
+            )
+        except Exception as e:
+            logger.error(f"Error in quiz command: {e}")
+            await update.message.reply_text(
+                "Sorry, couldn't load quizzes right now. Please try again later."
+            )
+
+    async def points_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Show user's points."""
+        user_id = update.effective_user.id
+        try:
+            # Get points from database
+            self.db_manager.cursor.execute(
+                "SELECT points FROM user_points WHERE user_id = ?",
+                (user_id,)
+            )
+            result = self.db_manager.cursor.fetchone()
+            points = result[0] if result else 0
+            
+            await update.message.reply_text(
+                f"🏆 *Your Points*\n\n"
+                f"You have earned *{points}* points!\n"
+                f"Keep participating to earn more.",
+                parse_mode=ParseMode.MARKDOWN
+            )
+        except Exception as e:
+            logger.error(f"Error in points command: {e}")
+            await update.message.reply_text(
+                "Sorry, couldn't fetch your points right now. Please try again later."
+            )
+
+    async def leaderboard_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Show the leaderboard."""
+        try:
+            # Get top 10 users from database
+            self.db_manager.cursor.execute(
+                "SELECT user_id, points FROM user_points ORDER BY points DESC LIMIT 10"
+            )
+            results = self.db_manager.cursor.fetchall()
+            
+            if not results:
+                await update.message.reply_text(
+                    "🏆 *Leaderboard*\n\n"
+                    "No points recorded yet.\n"
+                    "Be the first to earn points!",
+                    parse_mode=ParseMode.MARKDOWN
+                )
+                return
+            
+            message = "🏆 *Leaderboard*\n\n"
+            for i, (user_id, points) in enumerate(results, 1):
+                message += f"{i}. User {user_id}: {points} points\n"
+            
+            await update.message.reply_text(
+                message,
+                parse_mode=ParseMode.MARKDOWN
+            )
+        except Exception as e:
+            logger.error(f"Error in leaderboard command: {e}")
+            await update.message.reply_text(
+                "Sorry, couldn't fetch the leaderboard right now. Please try again later."
+            )
+
+    async def cancel_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Cancel the current operation."""
+        if 'waiting_for_challenge_answer' in context.user_data:
+            del context.user_data['waiting_for_challenge_answer']
+            await update.message.reply_text(
+                "Operation cancelled. Use /help to see available commands."
+            )
+        else:
+            await update.message.reply_text(
+                "No operation to cancel. Use /help to see available commands."
+            )
+
+    async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle incoming messages."""
+        if not update.message:
+            return
+
+        try:
+            # Moderate message
+            should_delete, warning = await self.msg_handler.moderate_message(update.message, context)
+            
+            if should_delete:
+                try:
+                    await update.message.delete()
+                    if warning:
+                        await context.bot.send_message(
+                            chat_id=update.effective_chat.id,
+                            text=warning
+                        )
+                except Exception as e:
+                    logger.error(f"Could not delete message: {e}")
+                return
+
+            if warning:
+                await context.bot.send_message(
+                    chat_id=update.effective_chat.id,
+                    text=warning
+                )
+
+            # Handle challenge answers
+            if 'waiting_for_challenge_answer' in context.user_data:
+                await self.handle_challenge_answer(update, context)
+            # Handle private chat messages
+            elif update.effective_chat.type == 'private':
+                await update.message.reply_text(
+                    "I can help you with:\n\n"
+                    "🎯 /challenge - Get a coding challenge\n"
+                    "❓ /quiz - Take a quiz\n"
+                    "📚 /resources - Access learning materials\n"
+                    "💡 /tip - Get a random tech tip\n"
+                    "🏆 /points - Check your points\n\n"
+                    "You can also send me images containing text or error messages for OCR analysis!"
+                )
+            # Handle group messages
+            else:
+                # Only respond to direct mentions or commands in groups
+                if update.message.text and (
+                    update.message.text.startswith('/') or 
+                    f"@{context.bot.username}" in update.message.text
+                ):
+                    await update.message.reply_text(
+                        "Use /help to see available commands!"
+                    )
+
+        except Exception as e:
+            logger.error(f"Error handling message: {e}", exc_info=True)
+            await update.message.reply_text(
+                "Sorry, something went wrong. Please try again later."
+            )
+
+    async def handle_challenge_answer(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle challenge answer submission."""
+        try:
+            challenge_info = context.user_data.get('current_challenge')
+            if not challenge_info:
+                await update.message.reply_text(
+                    "Sorry, I couldn't find the challenge you're answering. Please try selecting a challenge again."
+                )
+                return
+
+            # Load the challenge details
+            with open('resources/programming_challenges.json', 'r', encoding='utf-8') as f:
+                challenges = json.load(f)
+            
+            # Find the challenge
+            challenge = None
+            for c in challenges.get(challenge_info['category'], {}).get(challenge_info['difficulty'], []):
+                if str(c.get('id')) == challenge_info['id']:
+                    challenge = c
+                    break
+            
+            if challenge:
+                # Store the answer (you might want to add this to a database)
+                answer = update.message.text or update.message.caption or "No text content"
+                
+                # Clear the waiting state
+                del context.user_data['waiting_for_challenge_answer']
+                del context.user_data['current_challenge']
+                
+                # Send confirmation message with explanation
+                await update.message.reply_text(
+                    f"✅ Your solution has been submitted!\n\n"
+                    f"<b>Challenge:</b> {html.escape(challenge['title'])}\n"
+                    f"<b>Explanation:</b>\n{html.escape(challenge['explanation'])}\n\n"
+                    f"Use /challenge to try another challenge.",
+                    parse_mode=ParseMode.HTML
+                )
+            else:
+                raise ValueError("Challenge not found")
+                
+        except Exception as e:
+            logger.error(f"Error handling challenge answer: {e}")
+            await update.message.reply_text(
+                "Sorry, there was an error processing your answer. Please try again.",
+                parse_mode=ParseMode.HTML
+            )
+
+    async def handle_button(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle button clicks."""
+        query = update.callback_query
+        await query.answer()  # acknowledge the button click
+
+        try:
+            if query.data == "challenge_categories":
+                # Show categories again
+                keyboard = []
+                for category, name in config.CHALLENGE_CATEGORIES.items():
+                    keyboard.append([
+                        InlineKeyboardButton(
+                            name,
+                            callback_data=f"challenge_category_{category}"
+                        )
+                    ])
+                
+                reply_markup = InlineKeyboardMarkup(keyboard)
+                await query.edit_message_text(
+                    "🎯 *Choose a Challenge Category:*\n\n"
+                    "Select the type of challenge you'd like to try:",
+                    reply_markup=reply_markup,
+                    parse_mode=ParseMode.MARKDOWN
+                )
+            elif query.data.startswith('challenge_category_'):
+                await self.handle_challenge_category(query, context)
+            elif query.data.startswith('challenge_diff_'):
+                await self.handle_challenge_difficulty(query, context)
+            elif query.data.startswith('challenge_hint_'):
+                await self.handle_challenge_hint(query, context)
+            elif query.data.startswith('challenge_submit_'):
+                await self.handle_challenge_submit(query, context)
+            elif query.data.startswith('challenge_translate_'):
+                await self.handle_challenge_translate(query, context)
+            elif query.data.startswith('resource_'):
+                await self.handle_resource_category(query, context)
+            elif query.data.startswith('quiz_'):
+                await self.handle_quiz_selection(query, context)
+            else:
+                logger.warning(f"Unknown callback data: {query.data}")
+                await query.edit_message_text(
+                    "Sorry, I don't know how to handle this button. Please try again.",
+                    parse_mode=ParseMode.MARKDOWN
+                )
+        except Exception as e:
+            logger.error(f"Error handling button click: {e}", exc_info=True)
+            await query.edit_message_text(
+                "Sorry, something went wrong. Please try again.",
+                reply_markup=InlineKeyboardMarkup([[
+                    InlineKeyboardButton("« Back to Main Menu", callback_data="main_menu")
+                ]]),
+                parse_mode=ParseMode.MARKDOWN
+            )
+
+    async def handle_challenge_category(self, query: CallbackQuery, context: ContextTypes.DEFAULT_TYPE):
+        """Handle challenge category selection."""
+        try:
+            category = query.data.replace('challenge_category_', '')
+            keyboard = [
+                [InlineKeyboardButton("Easy", callback_data=f"challenge_diff_{category}_easy")],
+                [InlineKeyboardButton("Medium", callback_data=f"challenge_diff_{category}_medium")],
+                [InlineKeyboardButton("Hard", callback_data=f"challenge_diff_{category}_hard")],
+                [InlineKeyboardButton("« Back", callback_data="challenge_categories")]
+            ]
+            
+            category_name = config.CHALLENGE_CATEGORIES.get(category, "Unknown Category")
+            await query.edit_message_text(
+                f"🎯 *Select Difficulty Level*\n\n"
+                f"Category: *{category_name}*\n"
+                f"Choose how challenging you want it to be:",
+                reply_markup=InlineKeyboardMarkup(keyboard),
+                parse_mode=ParseMode.MARKDOWN
+            )
+        except Exception as e:
+            logger.error(f"Error in challenge category handling: {e}")
+            await query.edit_message_text(
+                "Sorry, something went wrong. Please try again.",
+                reply_markup=InlineKeyboardMarkup([[
+                    InlineKeyboardButton("« Back to Categories", callback_data="challenge_categories")
+                ]]),
+                parse_mode=ParseMode.MARKDOWN
+            )
+
+    async def handle_challenge_difficulty(self, query: CallbackQuery, context: ContextTypes.DEFAULT_TYPE):
+        """Handle challenge difficulty selection."""
+        try:
+            logger.info(f"Processing challenge_diff callback. Raw data: {query.data}")
+            parts = query.data.split('_')
+
+            # Handle category and difficulty parsing
+            if len(parts) >= 4:
+                if len(parts) == 5 and parts[2] == 'web' and parts[3] == 'development':
+                    category = 'web_development'
+                    difficulty = parts[4]
+                else:
+                    category = parts[2]
+                    difficulty = parts[3]
+                
+                if category in config.CHALLENGE_CATEGORIES and difficulty in ['easy', 'medium', 'hard']:
+                    try:
+                        # Load challenges
+                        with open('resources/programming_challenges.json', 'r', encoding='utf-8') as f:
+                            challenges = json.load(f)
+                        
+                        category_challenges = challenges.get(category, {}).get(difficulty, [])
+                        
+                        if category_challenges:
+                            # Select a random challenge
+                            challenge = random.choice(category_challenges)
+                            
+                            # Store challenge
+                            context.user_data['current_challenge'] = {
+                                'id': challenge['id'],
+                                'category': category,
+                                'difficulty': difficulty,
+                                'title': challenge['title'],
+                                'description': challenge['description'],
+                                'points': challenge['points'],
+                                'hint': challenge['hint'],
+                                'explanation': challenge.get('explanation', ''),
+                                'key_points': challenge.get('key_points', '')
+                            }
+                            
+                            # Format message
+                            message = (
+                                f"🎯 <b>Coding Challenge</b>\n\n"
+                                f"<b>{html.escape(challenge['title'])}</b>\n\n"
+                                f"📝 <b>Description:</b>\n{html.escape(challenge['description'])}\n\n"
+                                f"Category: {html.escape(config.CHALLENGE_CATEGORIES[category])}\n"
+                                f"Difficulty: {difficulty.title()}\n"
+                                f"Points: {challenge['points']}"
+                            )
+                            
+                            keyboard = [
+                                [InlineKeyboardButton("💡 Show Hint", 
+                                    callback_data=f"challenge_hint_{category}_{difficulty}_{challenge['id']}")],
+                                [InlineKeyboardButton("✍️ Submit Solution", 
+                                    callback_data=f"challenge_submit_{category}_{difficulty}_{challenge['id']}")],
+                                [InlineKeyboardButton("🌍 Translate to Somali", 
+                                    callback_data=f"challenge_translate_{category}_{difficulty}_{challenge['id']}")],
+                                [InlineKeyboardButton("🔄 Try Another", 
+                                    callback_data=f"challenge_diff_{category}_{difficulty}")],
+                                [InlineKeyboardButton("« Back to Difficulty", 
+                                    callback_data=f"challenge_category_{category}")],
+                                [InlineKeyboardButton("« Back to Categories", 
+                                    callback_data="challenge_categories")]
+                            ]
+                        
+                        await query.edit_message_text(
+                                message,
+                            reply_markup=InlineKeyboardMarkup(keyboard),
+                                parse_mode=ParseMode.HTML
+                        )
+                    else:
+                        raise ValueError("No challenges available")
+                    except Exception as e:
+                        logger.error(f"Error loading challenge: {e}")
+                        raise
+                else:
+                    raise ValueError("Invalid category or difficulty")
+            else:
+                raise ValueError("Invalid callback format")
+        except Exception as e:
+            logger.error(f"Error in challenge handling: {e}")
+            await query.edit_message_text(
+                f"Sorry, something went wrong. Please try again.",
+                reply_markup=InlineKeyboardMarkup([[
+                    InlineKeyboardButton("« Back to Categories", callback_data="challenge_categories")
+                ]]),
+                parse_mode=ParseMode.HTML
+            )
+
+    async def handle_challenge_hint(self, query: CallbackQuery, context: ContextTypes.DEFAULT_TYPE):
+        """Handle challenge hint request."""
+        try:
+            _, _, category, difficulty, challenge_id = query.data.split('_')
+            
+            # Load challenges from file
+            with open('resources/programming_challenges.json', 'r', encoding='utf-8') as f:
+                challenges = json.load(f)
+            
+            # Find the challenge
+            challenge = None
+            for c in challenges.get(category, {}).get(difficulty, []):
+                if str(c.get('id')) == challenge_id:
+                    challenge = c
+                    break
+            
+            if challenge and 'hint' in challenge:
+                # Format the hint message with HTML
+                message = (
+                    f"🎯 <b>{html.escape(challenge['title'])}</b>\n\n"
+                    f"💡 <b>Hint:</b>\n{html.escape(challenge['hint'])}\n\n"
+                    f"📝 <b>Original Challenge:</b>\n{html.escape(challenge['description'])}"
+                )
+                
+                keyboard = [
+                    [InlineKeyboardButton(
+                        "🌍 Translate to Somali",
+                        callback_data=f"challenge_translate_{category}_{difficulty}_{challenge_id}"
+                    )],
+                    [InlineKeyboardButton(
+                        "✍️ Submit Solution",
+                        callback_data=f"challenge_submit_{category}_{difficulty}_{challenge_id}"
+                    )],
+                    [InlineKeyboardButton(
+                        "🔄 Try Another",
+                        callback_data=f"challenge_diff_{category}_{difficulty}"
+                    )],
+                    [InlineKeyboardButton(
+                        "« Back to Challenge",
+                        callback_data=f"challenge_diff_{category}_{difficulty}"
+                    )]
+                ]
+                
+                await query.edit_message_text(
+                    message,
+                    reply_markup=InlineKeyboardMarkup(keyboard),
+                    parse_mode=ParseMode.HTML
+                )
+            else:
+                await query.edit_message_text(
+                    "Sorry, no hint is available for this challenge.",
+                    reply_markup=InlineKeyboardMarkup([[
+                        InlineKeyboardButton("« Back to Challenge", callback_data=f"challenge_diff_{category}_{difficulty}")
+                    ]]),
+                    parse_mode=ParseMode.HTML
+                )
+        except Exception as e:
+            logger.error(f"Error showing hint: {e}")
+            await query.edit_message_text(
+                "Sorry, something went wrong. Please try again.",
+                reply_markup=InlineKeyboardMarkup([[
+                    InlineKeyboardButton("« Back to Categories", callback_data="challenge_categories")
+                ]]),
+                parse_mode=ParseMode.HTML
+            )
+
+    async def handle_challenge_submit(self, query: CallbackQuery, context: ContextTypes.DEFAULT_TYPE):
+        """Handle challenge submission request."""
+        try:
+            _, _, category, difficulty, challenge_id = query.data.split('_')
+            
+            # Store the challenge info in user_data for later reference
+            context.user_data['current_challenge'] = {
+                'category': category,
+                'difficulty': difficulty,
+                'id': challenge_id
+            }
+            
+            # Ask user to submit their answer
+            await query.edit_message_text(
+                "Please send your answer as a reply to this message.\n\n"
+                "You can include:\n"
+                "- Code snippets\n"
+                "- Explanations\n"
+                "- Screenshots of your solution\n\n"
+                "Type /cancel to cancel answer submission.",
+                reply_markup=InlineKeyboardMarkup([[
+                    InlineKeyboardButton("« Back to Challenge", callback_data=f"challenge_diff_{category}_{difficulty}")
+                ]]),
+                parse_mode=ParseMode.MARKDOWN
+            )
+            
+            # Set the user's state to waiting for challenge answer
+            context.user_data['waiting_for_challenge_answer'] = True
+            
+        except Exception as e:
+            logger.error(f"Error handling challenge submission: {e}")
+            await query.edit_message_text(
+                "Sorry, there was an error processing your submission. Please try again.",
+                reply_markup=InlineKeyboardMarkup([[
+                    InlineKeyboardButton("« Back to Categories", callback_data="challenge_categories")
+                ]]),
+                parse_mode=ParseMode.MARKDOWN
+            )
+
+    async def handle_resource_category(self, query: CallbackQuery, context: ContextTypes.DEFAULT_TYPE):
+        """Handle resource category selection."""
+        try:
+            category = query.data.replace('resource_', '')
+            with open('resources/learning_resources.json', 'r', encoding='utf-8') as f:
+                resources = json.load(f)
+            
+            if category in resources:
+                resource_list = resources[category]
+                message = f"📚 *{category} Resources*\n\n"
+                for resource in resource_list:
+                    message += f"• [{resource['title']}]({resource['url']})\n"
+                    if 'description' in resource:
+                        message += f"  {resource['description']}\n"
+                    message += "\n"
+                
+                keyboard = [[InlineKeyboardButton("« Back to Categories", callback_data="resources")]]
+                await query.edit_message_text(
+                    message,
+                    reply_markup=InlineKeyboardMarkup(keyboard),
+                    parse_mode=ParseMode.MARKDOWN,
+                    disable_web_page_preview=True
+                )
+            else:
+                raise ValueError("Invalid resource category")
+        except Exception as e:
+            logger.error(f"Error handling resource category: {e}")
+            await query.edit_message_text(
+                "Sorry, something went wrong. Please try again.",
+                reply_markup=InlineKeyboardMarkup([[
+                    InlineKeyboardButton("« Back to Categories", callback_data="resources")
+                ]]),
+                parse_mode=ParseMode.MARKDOWN
+            )
+
+    async def handle_quiz_selection(self, query: CallbackQuery, context: ContextTypes.DEFAULT_TYPE):
+        """Handle quiz selection."""
+        try:
+            category = query.data.replace('quiz_', '')
+            with open('resources/quizzes.json', 'r', encoding='utf-8') as f:
+                quizzes = json.load(f)
+            
+            if category in quizzes:
+                quiz = random.choice(quizzes[category])
+                message = (
+                    f"❓ *{quiz['question']}*\n\n"
+                    f"Points: {quiz['points']}"
+                )
+                
+                keyboard = []
+                for option in quiz['options']:
+                    keyboard.append([InlineKeyboardButton(
+                        option,
+                        callback_data=f"quiz_answer_{category}_{quiz['id']}_{option}"
+                    )])
+                keyboard.append([InlineKeyboardButton("« Back to Categories", callback_data="quiz")])
+                
+                await query.edit_message_text(
+                    message,
+                    reply_markup=InlineKeyboardMarkup(keyboard),
+                    parse_mode=ParseMode.MARKDOWN
+                )
+            else:
+                raise ValueError("Invalid quiz category")
+        except Exception as e:
+            logger.error(f"Error handling quiz selection: {e}")
+            await query.edit_message_text(
+                "Sorry, something went wrong. Please try again.",
+                reply_markup=InlineKeyboardMarkup([[
+                    InlineKeyboardButton("« Back to Categories", callback_data="quiz")
+                ]]),
+                parse_mode=ParseMode.MARKDOWN
+            )
+        
+    async def handle_photo(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle photos for OCR processing."""
+        try:
+            # Only process in private chats
+            if update.effective_chat.type != 'private':
+                return
+
+            message = update.message
+            if not message or not message.photo:
+                return
+
+            # Get the largest photo (best quality)
+            photo = message.photo[-1]
+            
+            # Send acknowledgment
+            processing_msg = await message.reply_text(
+                "🔍 Processing your error message...\n"
+                "This might take a moment."
+            )
+
+            logger.info(f"Starting OCR process for image from user {update.effective_user.id}")
+            
+            try:
+                # Download the image
+                file = await context.bot.get_file(photo.file_id)
+                logger.info("Image downloaded successfully")
+                
+                with tempfile.NamedTemporaryFile(delete=False, suffix='.jpg') as tmp_file:
+                    await file.download_to_drive(tmp_file.name)
+                    logger.info(f"Image saved to temporary file: {tmp_file.name}")
+                    
+                    try:
+                        image = Image.open(tmp_file.name)
+                        logger.info(f"Original image size: {image.size}")
+                        
+                        # Enhanced preprocessing for better OCR
+                        # Convert to grayscale
+                        image = image.convert('L')
+                        
+                        # Increase contrast
+                        enhancer = ImageEnhance.Contrast(image)
+                        image = enhancer.enhance(2.0)
+                        
+                        # Increase sharpness
+                        enhancer = ImageEnhance.Sharpness(image)
+                        image = enhancer.enhance(2.0)
+                        
+                        # Resize if image is too small
+                        if image.size[0] < 1000 or image.size[1] < 1000:
+                            ratio = max(1000/image.size[0], 1000/image.size[1])
+                            new_size = (int(image.size[0]*ratio), int(image.size[1]*ratio))
+                            image = image.resize(new_size, Image.Resampling.LANCZOS)
+                        
+                        logger.info("Extracting text with Tesseract...")
+                        extracted_text = pytesseract.image_to_string(
+                            image,
+                            config='--psm 6 --oem 3'
+                        )
+                        logger.info(f"Extracted text length: {len(extracted_text)}")
+                        logger.info(f"First 100 chars: {extracted_text[:100]}")
+                        
+                        # Clean up the extracted text
+                        extracted_text = extracted_text.strip()
+                        # Remove multiple newlines
+                        extracted_text = re.sub(r'\n{3,}', '\n\n', extracted_text)
+                        
+                        if not extracted_text:
+                            await processing_msg.edit_text(
+                                "❌ I couldn't detect any text in this image.\n"
+                                "Please make sure the error message is clearly visible and the text is not blurry."
+                            )
+                            return
+
+                        # Format the extracted text with better markdown escaping
+                        error_type = self._detect_error_type(extracted_text)
+                        error_type_display = error_type.replace('_', ' ').title()
+
+                        formatted_text = (
+                            "📝 *Extracted Error Message:*\n"
+                            f"Type: _{error_type_display}_\n\n"
+                            f"```\n{extracted_text[:4000].replace('`', '')}```\n\n"
+                            "_You can now copy this text to search for solutions or share it with others._\n\n"
+                            "💡 *Tip:* For better results, try to:\n"
+                            "• Take clear screenshots with good contrast\n"
+                            "• Ensure the text is not blurry\n"
+                            "• Avoid background patterns or colors"
+                        )
+
+                        try:
+                            await processing_msg.edit_text(
+                                formatted_text,
+                                parse_mode=ParseMode.MARKDOWN
+                            )
+                        except Exception as e:
+                            if "Message is too long" in str(e):
+                                # Split into multiple messages if too long
+                                chunks = [formatted_text[i:i+4000] for i in range(0, len(formatted_text), 4000)]
+                                await processing_msg.edit_text(chunks[0], parse_mode=ParseMode.MARKDOWN)
+                                for chunk in chunks[1:]:
+                                    await context.bot.send_message(
+                                        chat_id=update.effective_chat.id,
+                                        text=chunk,
+                                        parse_mode=ParseMode.MARKDOWN
+                                    )
+                            else:
+                                raise
+
+                    except Exception as e:
+                        logger.error(f"OCR error: {e}")
+                        await processing_msg.edit_text(
+                            "❌ Sorry, I had trouble reading the text from your image.\n"
+                            "Please make sure the text is clear and try again."
+                        )
+                        
+            finally:
+                # Clean up temporary file
+                try:
+                    if 'tmp_file' in locals():
+                        os.unlink(tmp_file.name)
+                except Exception as e:
+                    logger.error(f"Error cleaning up temp file: {e}")
+                    
+        except Exception as e:
+            logger.error(f"Error handling image: {e}", exc_info=True)
+            await update.message.reply_text(
+                "❌ Sorry, something went wrong while processing your image.\n"
+                "Please try again later."
+            )
+
+    def _detect_error_type(self, text: str) -> str:
+        """Detect the type of error message from the extracted text."""
+        text_lower = text.lower()
+        
+        # Common error types and their keywords
+        error_patterns = {
+            'syntax_error': ['syntaxerror', 'syntax error', 'invalid syntax'],
+            'name_error': ['nameerror', 'name error', 'not defined'],
+            'type_error': ['typeerror', 'type error'],
+            'value_error': ['valueerror', 'value error'],
+            'index_error': ['indexerror', 'index error', 'list index out of range'],
+            'key_error': ['keyerror', 'key error'],
+            'attribute_error': ['attributeerror', 'attribute error', 'has no attribute'],
+            'import_error': ['importerror', 'import error', 'no module named'],
+            'indentation_error': ['indentationerror', 'indentation error', 'unexpected indent'],
+            'runtime_error': ['runtimeerror', 'runtime error'],
+            'zero_division_error': ['zerodivisionerror', 'zero division error', 'division by zero'],
+            'file_not_found_error': ['filenotfounderror', 'file not found', 'no such file'],
+            'permission_error': ['permissionerror', 'permission error', 'permission denied'],
+            'memory_error': ['memoryerror', 'memory error', 'out of memory'],
+            'overflow_error': ['overflowerror', 'overflow error'],
+            'recursion_error': ['recursionerror', 'recursion error', 'maximum recursion depth'],
+            'assertion_error': ['assertionerror', 'assertion error', 'assertion failed'],
+            'unicode_error': ['unicodeerror', 'unicode error'],
+            'module_not_found_error': ['modulenotfounderror', 'module not found'],
+            'connection_error': ['connectionerror', 'connection error', 'connection refused']
+        }
+        
+        # Check for each error type
+        for error_type, patterns in error_patterns.items():
+            if any(pattern in text_lower for pattern in patterns):
+                return error_type
+                
+        # If no specific error type is found
+        if 'error' in text_lower or 'exception' in text_lower:
+            return 'general_error'
+                
+        return 'unknown'
+
+    async def handle_challenge_translate(self, query: CallbackQuery, context: ContextTypes.DEFAULT_TYPE):
+        """Handle translation of challenge to Somali."""
+        try:
+            # Get the challenge from user_data
+            current_challenge = context.user_data.get('current_challenge')
+            if not current_challenge:
+                await query.answer("Challenge not found. Please select a new challenge.")
+                return
+
+            # Show translation progress message
+            progress_msg = await query.edit_message_text(
+                "🔄 Tarjumaada su'aasha...\nFadlan sug daqiiqad...",
+                reply_markup=None,
+                parse_mode=ParseMode.HTML
+            )
+
+            # Load the full challenge details to get all components
+            with open('resources/programming_challenges.json', 'r', encoding='utf-8') as f:
+                challenges = json.load(f)
+            
+            challenge = None
+            for c in challenges.get(current_challenge['category'], {}).get(current_challenge['difficulty'], []):
+                if str(c.get('id')) == str(current_challenge['id']):
+                    challenge = c
+                    break
+
+            if not challenge:
+                raise ValueError("Challenge not found in database")
+
+            # Translate all challenge components
+            translations = {
+                'title': await self.translate_to_somali(challenge['title']),
+                'description': await self.translate_to_somali(challenge['description']),
+                'hint': await self.translate_to_somali(challenge['hint']),
+                'explanation': await self.translate_to_somali(challenge.get('explanation', '')),
+                'key_points': await self.translate_to_somali(challenge.get('key_points', '')),
+                'category': await self.translate_to_somali(config.CHALLENGE_CATEGORIES[current_challenge['category']]),
+                'difficulty': await self.translate_to_somali(current_challenge['difficulty'].title())
+            }
+
+            # Format the translated message
+            message = (
+                f"🎯 <b>Su'aasha Coding-ka</b>\n\n"
+                f"<b>{html.escape(translations['title'])}</b>\n\n"
+                f"📝 <b>Sharraxaad:</b>\n{html.escape(translations['description'])}\n\n"
+            )
+
+            if translations['key_points']:
+                message += f"🎯 <b>Qodobada Muhiimka:</b>\n{html.escape(translations['key_points'])}\n\n"
+
+            message += (
+                f"<b>Qaybta:</b> {html.escape(translations['category'])}\n"
+                f"<b>Heerka:</b> {translations['difficulty']}\n"
+                f"<b>Dhibcaha:</b> {challenge['points']}\n\n"
+                f"💡 <b>Tilmaan:</b>\n{html.escape(translations['hint'])}"
+            )
+
+            if translations['explanation']:
+                message += f"\n\n📖 <b>Faahfaahin:</b>\n{html.escape(translations['explanation'])}"
+
+            # Store translated version in user_data for reference
+            context.user_data['current_challenge_translated'] = translations
+
+            # Keyboard with Somali labels
+            keyboard = [
+                [InlineKeyboardButton("💡 Tus Tilmaamaha", 
+                    callback_data=f"challenge_hint_{current_challenge['category']}_{current_challenge['difficulty']}_{current_challenge['id']}")],
+                [InlineKeyboardButton("✍️ Soo gudbi Xalka", 
+                    callback_data=f"challenge_submit_{current_challenge['category']}_{current_challenge['difficulty']}_{current_challenge['id']}")],
+                [InlineKeyboardButton("🌐 Ku celi Ingiriisi", 
+                    callback_data=f"challenge_diff_{current_challenge['category']}_{current_challenge['difficulty']}")],
+                [InlineKeyboardButton("🔄 Isku day mid kale", 
+                    callback_data=f"challenge_diff_{current_challenge['category']}_{current_challenge['difficulty']}")],
+                [InlineKeyboardButton("« Ku noqo Categories", 
+                    callback_data="challenge_categories")]
+            ]
+
+            await query.edit_message_text(
+                message,
+                reply_markup=InlineKeyboardMarkup(keyboard),
+                parse_mode=ParseMode.HTML
+            )
+
+        except Exception as e:
+            logger.error(f"Error in translation handling: {e}")
+            await query.edit_message_text(
+                "Waxaa dhacay qalad markii la turjumayey su'aasha. Fadlan isku day mar kale.",
+                reply_markup=InlineKeyboardMarkup([[
+                    InlineKeyboardButton("« Ku noqo su'aasha", 
+                        callback_data=f"challenge_diff_{current_challenge['category']}_{current_challenge['difficulty']}")
+                ]]),
+                parse_mode=ParseMode.HTML
+            )
+
+    async def translate_to_somali(self, text: str) -> str:
+        """Translate text to Somali."""
+        try:
+            # First check cache
+            cached = self.db_manager.get_translation(text)
+            if cached:
+                return cached
+
+            # TODO: Replace with actual translation API call
+            # For now, simulate translation by appending [Somali]
+            translated = f"{text} [Somali]"
+            
+            # Cache the translation
+            self.db_manager.cache_translation(text, translated)
+            
+            return translated
+        except Exception as e:
+            logger.error(f"Translation error: {e}")
+            return text
+
+async def main():
+    """Main function to run the bot."""
+    try:
+        bot = TelegramBot(config.BOT_TOKEN)
+        await bot.start()
+    except KeyboardInterrupt:
+        logger.info("Bot stopped by user")
+    except Exception as e:
+        logger.error(f"Bot stopped due to error: {e}", exc_info=True)
+    finally:
+        # Ensure all tasks are cleaned up
+        tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
+        for task in tasks:
+            task.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
+
+if __name__ == "__main__":
+    asyncio.run(main()) 

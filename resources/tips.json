@@ -1,0 +1,82 @@
+{
+    "security": [
+        {
+            "id": 1,
+            "title": "Use Strong Passwords",
+            "content": "Always use strong, unique passwords for each account. A strong password should be at least 12 characters long and include a mix of uppercase and lowercase letters, numbers, and special characters.",
+            "category": "security",
+            "tags": ["password", "security", "best-practice"]
+        },
+        {
+            "id": 2,
+            "title": "Enable Two-Factor Authentication",
+            "content": "2FA adds an extra layer of security to your accounts. Even if someone gets your password, they can't access your account without the second factor.",
+            "category": "security",
+            "tags": ["2fa", "security", "authentication"]
+        }
+    ],
+    "programming": [
+        {
+            "id": 1,
+            "title": "DRY Principle",
+            "content": "Don't Repeat Yourself (DRY) is a fundamental principle of software development. Extract repeated code into reusable functions or modules.",
+            "category": "programming",
+            "tags": ["best-practice", "coding", "principles"]
+        },
+        {
+            "id": 2,
+            "title": "Code Comments",
+            "content": "Write clear, concise comments that explain WHY something is done, not WHAT is being done. The code itself should be clear enough to show what it does.",
+            "category": "programming",
+            "tags": ["documentation", "best-practice", "coding"]
+        }
+    ],
+    "best_practices": [
+        {
+            "id": 1,
+            "title": "Version Control",
+            "content": "Always use version control (like Git) for your projects. Commit often with clear, descriptive commit messages.",
+            "category": "best_practices",
+            "tags": ["git", "version-control", "collaboration"]
+        },
+        {
+            "id": 2,
+            "title": "Code Review",
+            "content": "Regular code reviews help catch bugs early, share knowledge, and maintain code quality. Make them a part of your development process.",
+            "category": "best_practices",
+            "tags": ["collaboration", "quality", "team"]
+        }
+    ],
+    "career": [
+        {
+            "id": 1,
+            "title": "Keep Learning",
+            "content": "Technology evolves rapidly. Set aside time each week to learn new technologies, read tech blogs, or work on side projects.",
+            "category": "career",
+            "tags": ["learning", "growth", "development"]
+        },
+        {
+            "id": 2,
+            "title": "Build Your Portfolio",
+            "content": "Maintain a portfolio of your projects on GitHub. It's a great way to showcase your skills to potential employers.",
+            "category": "career",
+            "tags": ["portfolio", "github", "job-hunting"]
+        }
+    ],
+    "tools": [
+        {
+            "id": 1,
+            "title": "IDE Shortcuts",
+            "content": "Learn keyboard shortcuts for your IDE. They can significantly improve your coding speed and productivity.",
+            "category": "tools",
+            "tags": ["productivity", "ide", "efficiency"]
+        },
+        {
+            "id": 2,
+            "title": "Debug Tools",
+            "content": "Familiarize yourself with your language's debugging tools. Understanding how to use breakpoints and watch variables will save you hours of debugging time.",
+            "category": "tools",
+            "tags": ["debugging", "development", "tools"]
+        }
+    ]
+} 

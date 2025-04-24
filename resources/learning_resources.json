@@ -1,0 +1,167 @@
+{
+    "categories": {
+        "programming_basics": {
+            "name": "Programming Fundamentals",
+            "description": "Learn the basics of programming with Python, JavaScript, and other popular languages.",
+            "levels": {
+                "beginner": {
+                    "name": "Beginner",
+                    "resources": [
+                        {
+                            "name": "Python for Beginners",
+                            "url": "https://www.python.org/about/gettingstarted/",
+                            "description": "Official Python getting started guide"
+                        },
+                        {
+                            "name": "freeCodeCamp",
+                            "url": "https://www.freecodecamp.org/learn",
+                            "description": "Interactive programming tutorials"
+                        }
+                    ]
+                },
+                "intermediate": {
+                    "name": "Intermediate",
+                    "resources": [
+                        {
+                            "name": "Python Design Patterns",
+                            "url": "https://python-patterns.guide/",
+                            "description": "Common design patterns in Python"
+                        }
+                    ]
+                }
+            }
+        },
+        "web_development": {
+            "name": "Web Development",
+            "description": "Learn frontend and backend web development technologies.",
+            "levels": {
+                "beginner": {
+                    "name": "Beginner",
+                    "resources": [
+                        {
+                            "name": "MDN Web Docs",
+                            "url": "https://developer.mozilla.org/en-US/docs/Learn",
+                            "description": "Web development learning pathway"
+                        }
+                    ]
+                },
+                "intermediate": {
+                    "name": "Intermediate",
+                    "resources": [
+                        {
+                            "name": "Full Stack Open",
+                            "url": "https://fullstackopen.com/en/",
+                            "description": "Modern web development"
+                        }
+                    ]
+                }
+            }
+        },
+        "cybersecurity": {
+            "name": "Cybersecurity",
+            "description": "Learn about cybersecurity, ethical hacking, and security best practices.",
+            "levels": {
+                "beginner": {
+                    "name": "Beginner",
+                    "resources": [
+                        {
+                            "name": "OWASP Top 10",
+                            "url": "https://owasp.org/www-project-top-ten/",
+                            "description": "Web application security risks"
+                        }
+                    ]
+                },
+                "intermediate": {
+                    "name": "Intermediate",
+                    "resources": [
+                        {
+                            "name": "PortSwigger Web Security Academy",
+                            "url": "https://portswigger.net/web-security",
+                            "description": "Web security learning materials"
+                        }
+                    ]
+                }
+            }
+        },
+        "data_science": {
+            "name": "Data Science",
+            "description": "Learn data analysis, visualization, and machine learning.",
+            "levels": {
+                "beginner": {
+                    "name": "Beginner",
+                    "resources": [
+                        {
+                            "name": "Kaggle Courses",
+                            "url": "https://www.kaggle.com/learn",
+                            "description": "Free data science courses"
+                        }
+                    ]
+                }
+            }
+        },
+        "mobile_dev": {
+            "name": "Mobile Development",
+            "description": "Learn to build mobile applications for iOS and Android.",
+            "levels": {
+                "beginner": {
+                    "name": "Beginner",
+                    "resources": [
+                        {
+                            "name": "Flutter Dev",
+                            "url": "https://flutter.dev/learn",
+                            "description": "Official Flutter learning resources"
+                        }
+                    ]
+                }
+            }
+        },
+        "cloud_computing": {
+            "name": "Cloud Computing",
+            "description": "Learn about cloud platforms and services.",
+            "levels": {
+                "beginner": {
+                    "name": "Beginner",
+                    "resources": [
+                        {
+                            "name": "AWS Training",
+                            "url": "https://aws.amazon.com/training/",
+                            "description": "AWS learning resources"
+                        }
+                    ]
+                }
+            }
+        },
+        "devops": {
+            "name": "DevOps",
+            "description": "Learn about continuous integration, deployment, and operations.",
+            "levels": {
+                "beginner": {
+                    "name": "Beginner",
+                    "resources": [
+                        {
+                            "name": "GitHub Actions",
+                            "url": "https://docs.github.com/en/actions",
+                            "description": "Learn CI/CD with GitHub Actions"
+                        }
+                    ]
+                }
+            }
+        },
+        "machine_learning": {
+            "name": "Machine Learning",
+            "description": "Learn about artificial intelligence and machine learning.",
+            "levels": {
+                "beginner": {
+                    "name": "Beginner",
+                    "resources": [
+                        {
+                            "name": "Google ML Crash Course",
+                            "url": "https://developers.google.com/machine-learning/crash-course",
+                            "description": "Machine learning fundamentals"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+} 

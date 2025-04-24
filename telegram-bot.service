@@ -1,0 +1,14 @@
+[Unit]
+Description=K-Tech Somali Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/telegram-bot
+ExecStart=/usr/bin/python3 /home/ubuntu/telegram-bot/bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target 

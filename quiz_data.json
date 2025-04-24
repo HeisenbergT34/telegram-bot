@@ -1,0 +1,863 @@
+{
+    "programming": [
+        {
+            "question": "What is the output of print(type([]))?",
+            "options": [
+                "<class 'list'>",
+                "<class 'array'>",
+                "<class 'tuple'>",
+                "<class 'set'>"
+            ],
+            "correct": 0,
+            "explanation": "In Python, [] creates a list object, so type([]) returns <class 'list'>"
+        },
+        {
+            "question": "Which of these is NOT a Python data type?",
+            "options": [
+                "int",
+                "float",
+                "array",
+                "dict"
+            ],
+            "correct": 2,
+            "explanation": "Array is not a built-in Python data type. Python uses lists instead."
+        },
+        {
+            "question": "What is the time complexity of accessing a dictionary value by key in Python?",
+            "options": ["O(1)", "O(n)", "O(log n)", "O(n^2)"],
+            "correct": 0,
+            "explanation": "Dictionary lookups in Python have O(1) time complexity because they use hash tables internally."
+        },
+        {
+            "question": "Which statement about Python's GIL is true?",
+            "options": [
+                "It allows multiple threads to execute Python code simultaneously",
+                "It prevents multiple threads from executing Python code simultaneously",
+                "It only affects Python 2",
+                "It improves multi-threading performance"
+            ],
+            "correct": 1,
+            "explanation": "The Global Interpreter Lock (GIL) prevents multiple native threads from executing Python code simultaneously."
+        },
+        {
+            "question": "What is the purpose of __init__ method in Python?",
+            "options": [
+                "To initialize class variables",
+                "To define class methods",
+                "To delete class instances",
+                "To import modules"
+            ],
+            "correct": 0,
+            "explanation": "__init__ is a constructor method used to initialize new class instances and their attributes."
+        },
+        {
+            "question": "What is a closure in programming?",
+            "options": [
+                "A way to close files",
+                "A function that remembers its enclosing scope",
+                "A way to end loops",
+                "A method to close database connections"
+            ],
+            "correct": 1,
+            "explanation": "A closure is a function that retains access to variables from its enclosing scope even after the scope has closed."
+        },
+        {
+            "question": "What is the difference between == and is in Python?",
+            "options": [
+                "They are exactly the same",
+                "== compares values, is compares identity",
+                "is compares values, == compares identity",
+                "== is faster than is"
+            ],
+            "correct": 1,
+            "explanation": "== compares the values of objects, while 'is' compares their identity (memory location)."
+        },
+        {
+            "question": "What is a decorator in Python?",
+            "options": [
+                "A design pattern",
+                "A function that modifies another function",
+                "A class attribute",
+                "A type of loop"
+            ],
+            "correct": 1,
+            "explanation": "A decorator is a function that takes another function as input and extends its behavior without explicitly modifying it."
+        },
+        {
+            "question": "What is the purpose of *args in Python?",
+            "options": [
+                "To multiply arguments",
+                "To pass a variable number of positional arguments",
+                "To unpack lists",
+                "To create tuples"
+            ],
+            "correct": 1,
+            "explanation": "*args allows a function to accept any number of positional arguments, which are packed into a tuple."
+        },
+        {
+            "question": "What is the difference between a shallow copy and a deep copy?",
+            "options": [
+                "There is no difference",
+                "Shallow copy creates new references, deep copy creates new objects",
+                "Deep copy is faster than shallow copy",
+                "Shallow copy uses less memory"
+            ],
+            "correct": 1,
+            "explanation": "A shallow copy creates new references to objects, while a deep copy creates new objects at all levels."
+        },
+        {
+            "question": "What is a generator in Python?",
+            "options": [
+                "A type of function that generates random numbers",
+                "A function that yields values one at a time",
+                "A class that creates new instances",
+                "A tool for code generation"
+            ],
+            "correct": 1,
+            "explanation": "A generator is a function that yields values one at a time instead of returning them all at once, saving memory."
+        },
+        {
+            "question": "What is the purpose of __str__ method?",
+            "options": [
+                "To convert objects to strings",
+                "To store strings",
+                "To compare strings",
+                "To concatenate strings"
+            ],
+            "correct": 0,
+            "explanation": "__str__ defines the string representation of an object for human readability."
+        },
+        {
+            "question": "What is the difference between append() and extend() for lists?",
+            "options": [
+                "They are the same",
+                "append adds one element, extend adds multiple elements",
+                "extend is faster than append",
+                "append uses less memory"
+            ],
+            "correct": 1,
+            "explanation": "append() adds a single element to a list, while extend() adds all elements from an iterable."
+        },
+        {
+            "question": "What is a lambda function?",
+            "options": [
+                "A named function",
+                "An anonymous function",
+                "A class method",
+                "A type of loop"
+            ],
+            "correct": 1,
+            "explanation": "A lambda function is an anonymous function that can have any number of arguments but can only have one expression."
+        },
+        {
+            "question": "What is the purpose of the with statement?",
+            "options": [
+                "To create loops",
+                "To handle exceptions",
+                "To manage resources automatically",
+                "To define functions"
+            ],
+            "correct": 2,
+            "explanation": "The with statement is used for proper handling of resources (like files) ensuring they are properly closed after use."
+        },
+        {
+            "question": "What is duck typing in Python?",
+            "options": [
+                "A way to handle ducks in code",
+                "Type checking at runtime",
+                "A type of inheritance",
+                "A naming convention"
+            ],
+            "correct": 1,
+            "explanation": "Duck typing means Python looks at object behavior rather than type for operation compatibility."
+        },
+        {
+            "question": "What is the purpose of __repr__ method?",
+            "options": [
+                "To represent objects as strings for debugging",
+                "To repeat strings",
+                "To remove objects",
+                "To rename objects"
+            ],
+            "correct": 0,
+            "explanation": "__repr__ provides a detailed string representation of an object for debugging and development."
+        },
+        {
+            "question": "What is the difference between a list and a tuple?",
+            "options": [
+                "Lists are faster than tuples",
+                "Tuples are mutable, lists are immutable",
+                "Lists are mutable, tuples are immutable",
+                "There is no difference"
+            ],
+            "correct": 2,
+            "explanation": "Lists are mutable (can be modified after creation) while tuples are immutable (cannot be modified after creation)."
+        },
+        {
+            "question": "What is the purpose of the pass statement?",
+            "options": [
+                "To pass variables between functions",
+                "To skip the rest of the loop",
+                "To do nothing and act as a placeholder",
+                "To pass control to another function"
+            ],
+            "correct": 2,
+            "explanation": "pass is a null statement that does nothing; it's used as a placeholder where syntax requires a statement."
+        },
+        {
+            "question": "What is the difference between a process and a thread?",
+            "options": [
+                "They are exactly the same",
+                "Processes share memory, threads don't",
+                "Threads share memory, processes don't",
+                "Neither shares memory"
+            ],
+            "correct": 2,
+            "explanation": "Threads within the same process share memory space, while processes have their own independent memory space."
+        },
+        {
+            "question": "What is dependency injection?",
+            "options": [
+                "A way to inject code into a program",
+                "A design pattern where dependencies are provided to objects",
+                "A type of SQL injection",
+                "A method to install dependencies"
+            ],
+            "correct": 1,
+            "explanation": "Dependency injection is a design pattern where objects receive their dependencies instead of creating them."
+        },
+        {
+            "question": "What is the difference between TCP and UDP?",
+            "options": [
+                "TCP is faster, UDP is reliable",
+                "UDP is connectionless and unreliable, TCP is connection-oriented and reliable",
+                "They are the same thing",
+                "UDP is newer than TCP"
+            ],
+            "correct": 1,
+            "explanation": "TCP ensures reliable, ordered data delivery, while UDP provides fast, connectionless communication without guarantees."
+        },
+        {
+            "question": "What is a memory leak in programming?",
+            "options": [
+                "When memory physically leaks from the computer",
+                "When allocated memory is not properly released",
+                "When a program uses too much memory",
+                "When memory is corrupted"
+            ],
+            "correct": 1,
+            "explanation": "A memory leak occurs when program fails to release memory that is no longer needed, causing gradual memory consumption."
+        },
+        {
+            "question": "What is the purpose of a virtual environment in Python?",
+            "options": [
+                "To create virtual machines",
+                "To isolate project dependencies",
+                "To speed up Python code",
+                "To compress Python files"
+            ],
+            "correct": 1,
+            "explanation": "Virtual environments create isolated spaces for Python projects, preventing dependency conflicts between projects."
+        },
+        {
+            "question": "What is the difference between GET and POST requests?",
+            "options": [
+                "GET is faster than POST",
+                "POST is more secure than GET",
+                "GET sends data in URL, POST in request body",
+                "They are exactly the same"
+            ],
+            "correct": 2,
+            "explanation": "GET requests send data as URL parameters, while POST requests send data in the request body."
+        },
+        {
+            "question": "What is a race condition?",
+            "options": [
+                "A programming competition",
+                "When multiple threads access shared data incorrectly",
+                "A type of sorting algorithm",
+                "A network protocol"
+            ],
+            "correct": 1,
+            "explanation": "Race conditions occur when multiple threads access shared resources without proper synchronization."
+        },
+        {
+            "question": "What is the purpose of the requirements.txt file?",
+            "options": [
+                "To list project requirements for humans",
+                "To specify Python package dependencies",
+                "To store Python code",
+                "To configure Python settings"
+            ],
+            "correct": 1,
+            "explanation": "requirements.txt lists all Python package dependencies needed for a project to run."
+        },
+        {
+            "question": "What is the purpose of the 'self' parameter in Python class methods?",
+            "options": [
+                "It refers to the current instance of the class",
+                "It's a keyword required by Python syntax",
+                "It represents the parent class",
+                "It's used to create static methods"
+            ],
+            "correct": 0,
+            "explanation": "The 'self' parameter refers to the instance of the class being created."
+        },
+        {
+            "question": "What is a list comprehension in Python?",
+            "options": [
+                "A way to create lists using a compact syntax",
+                "A way to sort lists",
+                "A way to delete lists",
+                "A way to merge lists"
+            ],
+            "correct": 0,
+            "explanation": "List comprehension provides a concise way to create lists based on existing lists or other iterables."
+        },
+        {
+            "question": "What is the purpose of the __slots__ attribute in Python classes?",
+            "options": [
+                "To restrict attribute creation",
+                "To create class methods",
+                "To define class variables",
+                "To inherit from other classes"
+            ],
+            "correct": 0,
+            "explanation": "__slots__ restricts attribute creation to only those listed, reducing memory usage and improving access speed."
+        },
+        {
+            "question": "What is the difference between multiprocessing and multithreading in Python?",
+            "options": [
+                "They are the same thing",
+                "Multiprocessing uses multiple CPUs, multithreading shares a CPU",
+                "Multithreading is faster than multiprocessing",
+                "Multiprocessing uses less memory"
+            ],
+            "correct": 1,
+            "explanation": "Multiprocessing runs processes on different CPU cores, while multithreading runs threads within the same process sharing CPU time."
+        },
+        {
+            "question": "What is the purpose of the @property decorator?",
+            "options": [
+                "To create class properties",
+                "To make methods behave like attributes",
+                "To define static methods",
+                "To create class variables"
+            ],
+            "correct": 1,
+            "explanation": "@property allows methods to be accessed like attributes while maintaining control over getting, setting, and deleting values."
+        },
+        {
+            "question": "What is the purpose of the __call__ method?",
+            "options": [
+                "To call other methods",
+                "To make instances callable like functions",
+                "To create class constructors",
+                "To define class methods"
+            ],
+            "correct": 1,
+            "explanation": "__call__ allows class instances to be called like functions, enabling function-like behavior for objects."
+        },
+        {
+            "question": "What is the difference between __getattr__ and __getattribute__?",
+            "options": [
+                "They are the same",
+                "__getattr__ handles missing attributes, __getattribute__ handles all attribute access",
+                "__getattribute__ handles missing attributes, __getattr__ handles all attribute access",
+                "Neither handles attributes"
+            ],
+            "correct": 1,
+            "explanation": "__getattr__ is called for missing attributes, while __getattribute__ is called for all attribute access."
+        }
+    ],
+    "security": [
+        {
+            "question": "Which of these is NOT a common type of SQL injection attack?",
+            "options": [
+                "Union-based",
+                "Error-based",
+                "Loop-based",
+                "Boolean-based"
+            ],
+            "correct": 2,
+            "explanation": "Loop-based is not a type of SQL injection. Common types are Union-based, Error-based, Boolean-based, and Time-based."
+        },
+        {
+            "question": "What is the purpose of a 'salt' in password hashing?",
+            "options": [
+                "To make passwords taste better",
+                "To add randomness to each hash",
+                "To encrypt the database",
+                "To speed up hashing"
+            ],
+            "correct": 1,
+            "explanation": "A salt is random data added to passwords before hashing to ensure unique hashes even for identical passwords."
+        },
+        {
+            "question": "What is Cross-Site Scripting (XSS)?",
+            "options": [
+                "A type of injection attack where malicious scripts are inserted into trusted websites",
+                "A method of encrypting website data",
+                "A technique for cross-domain resource sharing",
+                "A way to optimize website loading speed"
+            ],
+            "correct": 0,
+            "explanation": "XSS allows attackers to inject malicious client-side scripts into web pages viewed by other users."
+        },
+        {
+            "question": "What is a buffer overflow?",
+            "options": [
+                "When a program writes more data than allocated space",
+                "When a buffer is empty",
+                "When network traffic exceeds capacity",
+                "When memory is full"
+            ],
+            "correct": 0,
+            "explanation": "A buffer overflow occurs when a program writes more data to a buffer than it can hold, potentially overwriting adjacent memory."
+        },
+        {
+            "question": "What is CSRF (Cross-Site Request Forgery)?",
+            "options": [
+                "A type of XSS attack",
+                "Forcing users to make unwanted requests",
+                "A type of encryption",
+                "A secure protocol"
+            ],
+            "correct": 1,
+            "explanation": "CSRF tricks users into making unwanted requests to a website where they're authenticated."
+        },
+        {
+            "question": "What is the purpose of HTTPS?",
+            "options": [
+                "To make websites faster",
+                "To encrypt data in transit",
+                "To compress data",
+                "To block hackers"
+            ],
+            "correct": 1,
+            "explanation": "HTTPS encrypts data transmitted between client and server to prevent eavesdropping and tampering."
+        },
+        {
+            "question": "What is a Man-in-the-Middle (MITM) attack?",
+            "options": [
+                "A physical security breach",
+                "Intercepting communication between two parties",
+                "A type of virus",
+                "A hardware failure"
+            ],
+            "correct": 1,
+            "explanation": "MITM attacks occur when an attacker secretly intercepts and possibly alters communication between two parties."
+        },
+        {
+            "question": "What is the purpose of a WAF (Web Application Firewall)?",
+            "options": [
+                "To speed up websites",
+                "To filter and monitor HTTP traffic",
+                "To store website data",
+                "To manage databases"
+            ],
+            "correct": 1,
+            "explanation": "A WAF protects web applications by filtering and monitoring HTTP traffic between the app and the Internet."
+        },
+        {
+            "question": "What is a zero-day vulnerability?",
+            "options": [
+                "A vulnerability that's been patched",
+                "A vulnerability unknown to the software vendor",
+                "A vulnerability that takes no time to exploit",
+                "A vulnerability in new software"
+            ],
+            "correct": 1,
+            "explanation": "A zero-day vulnerability is a security flaw unknown to the software vendor and therefore has no patch available."
+        },
+        {
+            "question": "What is phishing?",
+            "options": [
+                "A type of fishing",
+                "Attempting to steal sensitive information by deception",
+                "A network protocol",
+                "A type of encryption"
+            ],
+            "correct": 1,
+            "explanation": "Phishing is a cyber attack that uses deception to steal sensitive information by masquerading as a trustworthy entity."
+        },
+        {
+            "question": "What is the purpose of a honeypot?",
+            "options": [
+                "To store honey",
+                "To attract and detect attackers",
+                "To encrypt data",
+                "To speed up networks"
+            ],
+            "correct": 1,
+            "explanation": "A honeypot is a security mechanism set to detect, deflect, or study hacking attempts by appearing to be a legitimate target."
+        },
+        {
+            "question": "What is the principle of least privilege?",
+            "options": [
+                "Giving users minimum necessary permissions",
+                "Restricting all access",
+                "Giving users all permissions",
+                "A type of authentication"
+            ],
+            "correct": 0,
+            "explanation": "The principle of least privilege means giving users only the minimum permissions they need to perform their tasks."
+        },
+        {
+            "question": "What is a DDoS attack?",
+            "options": [
+                "A type of virus",
+                "Overwhelming a system with traffic",
+                "A type of encryption",
+                "A security protocol"
+            ],
+            "correct": 1,
+            "explanation": "A DDoS (Distributed Denial of Service) attack overwhelms a system with traffic from multiple sources to make it unavailable."
+        },
+        {
+            "question": "What is two-factor authentication (2FA)?",
+            "options": [
+                "Using two passwords",
+                "Using two security factors for authentication",
+                "Double encryption",
+                "Two-step registration"
+            ],
+            "correct": 1,
+            "explanation": "2FA requires two different types of authentication factors to verify identity, enhancing security."
+        },
+        {
+            "question": "What is a reverse shell?",
+            "options": [
+                "A shell that goes backwards",
+                "A connection initiated from the target to the attacker",
+                "A type of encryption",
+                "A security tool"
+            ],
+            "correct": 1,
+            "explanation": "A reverse shell is a shell session initiated from a compromised machine back to the attacker's machine."
+        },
+        {
+            "question": "What is port scanning?",
+            "options": [
+                "Scanning documents",
+                "Checking which ports are open on a system",
+                "A type of malware",
+                "Network encryption"
+            ],
+            "correct": 1,
+            "explanation": "Port scanning is the process of checking which ports on a network are open, closed, or filtered."
+        },
+        {
+            "question": "What is social engineering?",
+            "options": [
+                "A type of software engineering",
+                "Manipulating people to divulge information",
+                "Building social networks",
+                "A type of encryption"
+            ],
+            "correct": 1,
+            "explanation": "Social engineering is the art of manipulating people into divulging confidential information or performing actions."
+        },
+        {
+            "question": "What is a rootkit?",
+            "options": [
+                "A gardening tool",
+                "Malware that provides privileged access",
+                "A type of password",
+                "A security protocol"
+            ],
+            "correct": 1,
+            "explanation": "A rootkit is malware designed to provide unauthorized access while actively hiding its presence."
+        },
+        {
+            "question": "What is SSL/TLS?",
+            "options": [
+                "A programming language",
+                "Protocols for secure communication",
+                "A type of database",
+                "A type of firewall"
+            ],
+            "correct": 1,
+            "explanation": "SSL/TLS are cryptographic protocols designed to provide secure communication over a computer network."
+        },
+        {
+            "question": "What is a security token?",
+            "options": [
+                "A type of cryptocurrency",
+                "A physical or digital authentication device",
+                "A type of malware",
+                "A network protocol"
+            ],
+            "correct": 1,
+            "explanation": "A security token is a physical or digital device used to prove identity or access rights."
+        },
+        {
+            "question": "What is a replay attack?",
+            "options": [
+                "Replaying a video multiple times",
+                "Retransmitting valid data transmissions maliciously",
+                "Attacking a server repeatedly",
+                "A type of DDoS attack"
+            ],
+            "correct": 1,
+            "explanation": "A replay attack occurs when an attacker captures and retransmits valid data transmissions to impersonate a legitimate user."
+        },
+        {
+            "question": "What is the purpose of network segmentation?",
+            "options": [
+                "To make networks faster",
+                "To divide networks into isolated segments for security",
+                "To save bandwidth",
+                "To connect multiple networks"
+            ],
+            "correct": 1,
+            "explanation": "Network segmentation divides networks into isolated segments to contain breaches and improve security."
+        },
+        {
+            "question": "What is the CIA triad in cybersecurity?",
+            "options": [
+                "Central Intelligence Agency rules",
+                "Confidentiality, Integrity, Availability",
+                "Computer Internet Access",
+                "Cyber Intelligence Assessment"
+            ],
+            "correct": 1,
+            "explanation": "The CIA triad represents the three key principles of information security: Confidentiality, Integrity, and Availability."
+        },
+        {
+            "question": "What is a backdoor in cybersecurity?",
+            "options": [
+                "A physical door at the back of a building",
+                "A secret way to bypass security controls",
+                "A type of firewall",
+                "A backup system"
+            ],
+            "correct": 1,
+            "explanation": "A backdoor is a method of bypassing normal authentication in a system, providing unauthorized access."
+        },
+        {
+            "question": "What is the purpose of an IDS (Intrusion Detection System)?",
+            "options": [
+                "To speed up network traffic",
+                "To detect and alert about suspicious activities",
+                "To block all traffic",
+                "To encrypt data"
+            ],
+            "correct": 1,
+            "explanation": "An IDS monitors network or system activities for malicious activities or policy violations and generates alerts."
+        },
+        {
+            "question": "What is a brute force attack?",
+            "options": [
+                "A physical attack on hardware",
+                "Systematically trying all possible passwords",
+                "A type of virus",
+                "A network protocol"
+            ],
+            "correct": 1,
+            "explanation": "A brute force attack attempts to find correct passwords by systematically trying every possible combination."
+        },
+        {
+            "question": "What is data exfiltration?",
+            "options": [
+                "Data cleaning",
+                "Unauthorized data transfer out of a network",
+                "Data compression",
+                "Data backup"
+            ],
+            "correct": 1,
+            "explanation": "Data exfiltration is the unauthorized transfer of data from a computer or network to another location."
+        },
+        {
+            "question": "What is the purpose of an air gap?",
+            "options": [
+                "To cool computers",
+                "To physically isolate a secure network",
+                "To improve Wi-Fi signals",
+                "To protect against water damage"
+            ],
+            "correct": 1,
+            "explanation": "An air gap is a security measure that physically isolates a secure network from unsecured networks."
+        },
+        {
+            "question": "What is the purpose of a security audit log?",
+            "options": [
+                "To track system performance",
+                "To record security-relevant events and activities",
+                "To store user passwords",
+                "To backup system files"
+            ],
+            "correct": 1,
+            "explanation": "Security audit logs record security-relevant events to track and investigate security incidents."
+        },
+        {
+            "question": "What is a side-channel attack?",
+            "options": [
+                "An attack from the side of a building",
+                "An attack based on information gained from system implementation",
+                "A type of DDoS attack",
+                "A network protocol attack"
+            ],
+            "correct": 1,
+            "explanation": "Side-channel attacks exploit information gained from the physical implementation of a system, such as timing, power consumption, or electromagnetic leaks."
+        },
+        {
+            "question": "What is the purpose of certificate pinning?",
+            "options": [
+                "To pin certificates to a wall",
+                "To validate specific SSL certificates",
+                "To create new certificates",
+                "To encrypt certificates"
+            ],
+            "correct": 1,
+            "explanation": "Certificate pinning associates a host with its expected certificate or public key, preventing man-in-the-middle attacks."
+        }
+    ],
+    "web_development": [
+        {
+            "question": "What is the purpose of CORS?",
+            "options": [
+                "To style web pages",
+                "To control resource sharing between origins",
+                "To compress images",
+                "To manage databases"
+            ],
+            "correct": 1,
+            "explanation": "CORS controls how web pages from one domain can request resources from another domain."
+        },
+        {
+            "question": "What is the difference between localStorage and sessionStorage?",
+            "options": [
+                "They are the same thing",
+                "localStorage persists, sessionStorage is temporary",
+                "sessionStorage is larger",
+                "localStorage is faster"
+            ],
+            "correct": 1,
+            "explanation": "localStorage persists data until explicitly cleared, while sessionStorage data is cleared when the session ends."
+        },
+        {
+            "question": "What is the purpose of a CDN?",
+            "options": [
+                "To create databases",
+                "To deliver content from nearest servers",
+                "To write JavaScript code",
+                "To design websites"
+            ],
+            "correct": 1,
+            "explanation": "A CDN (Content Delivery Network) delivers content from servers closest to the user for better performance."
+        },
+        {
+            "question": "What is the purpose of a service worker in web development?",
+            "options": [
+                "To manage web workers",
+                "To enable offline functionality and caching",
+                "To style web pages",
+                "To handle database operations"
+            ],
+            "correct": 1,
+            "explanation": "Service workers enable offline functionality by intercepting network requests and managing caching."
+        },
+        {
+            "question": "What is the purpose of a Web Socket?",
+            "options": [
+                "To power websites",
+                "To enable real-time bidirectional communication",
+                "To store web data",
+                "To style web pages"
+            ],
+            "correct": 1,
+            "explanation": "Web Sockets provide a persistent connection between client and server for real-time bidirectional communication."
+        },
+        {
+            "question": "What is the difference between cookies and local storage?",
+            "options": [
+                "They are the same",
+                "Cookies are sent with HTTP requests, local storage stays in browser",
+                "Local storage is more secure",
+                "Cookies store more data"
+            ],
+            "correct": 1,
+            "explanation": "Cookies are sent with every HTTP request to the server, while local storage data stays in the browser."
+        }
+    ],
+    "database": [
+        {
+            "question": "What is database normalization?",
+            "options": [
+                "Making databases normal",
+                "Organizing data to reduce redundancy",
+                "Speeding up queries",
+                "Backing up databases"
+            ],
+            "correct": 1,
+            "explanation": "Database normalization is the process of organizing data to reduce redundancy and improve data integrity."
+        },
+        {
+            "question": "What is a database index?",
+            "options": [
+                "A list of databases",
+                "A data structure that improves query speed",
+                "A type of table",
+                "A backup copy"
+            ],
+            "correct": 1,
+            "explanation": "A database index is a data structure that improves the speed of data retrieval operations."
+        },
+        {
+            "question": "What is a database transaction?",
+            "options": [
+                "A financial operation",
+                "A unit of work that must complete entirely",
+                "A type of query",
+                "A database backup"
+            ],
+            "correct": 1,
+            "explanation": "A database transaction is a unit of work that must be completed in its entirety or not at all (ACID properties)."
+        },
+        {
+            "question": "What is the purpose of database indexing?",
+            "options": [
+                "To speed up data retrieval operations",
+                "To compress database storage",
+                "To encrypt sensitive data",
+                "To backup database contents"
+            ],
+            "correct": 0,
+            "explanation": "Database indexing creates a data structure that improves the speed of data retrieval operations."
+        },
+        {
+            "question": "What is the difference between OLTP and OLAP databases?",
+            "options": [
+                "OLTP handles transactions, OLAP handles analytics",
+                "They are the same thing",
+                "OLAP is faster than OLTP",
+                "OLTP is newer than OLAP"
+            ],
+            "correct": 0,
+            "explanation": "OLTP (Online Transaction Processing) handles day-to-day transactions, while OLAP (Online Analytical Processing) handles complex queries for analytics."
+        },
+        {
+            "question": "What is the CAP theorem?",
+            "options": [
+                "A database security protocol",
+                "A theorem about Consistency, Availability, and Partition tolerance",
+                "A type of database",
+                "A query optimization technique"
+            ],
+            "correct": 1,
+            "explanation": "The CAP theorem states that a distributed database system can only guarantee two out of three properties: Consistency, Availability, and Partition tolerance."
+        },
+        {
+            "question": "What is database sharding?",
+            "options": [
+                "Breaking a database",
+                "Splitting data across multiple databases",
+                "Backing up databases",
+                "Encrypting databases"
+            ],
+            "correct": 1,
+            "explanation": "Sharding is splitting a database horizontally across multiple servers to improve scalability and performance."
+        }
+    ]
+}

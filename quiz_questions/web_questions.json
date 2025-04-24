@@ -1,0 +1,544 @@
+{
+    "category": "web_development",
+    "questions": [
+        {
+            "question": "What is the purpose of CORS?",
+            "options": [
+                "To control resource sharing between origins",
+                "To style web pages",
+                "To compress images",
+                "To manage databases"
+            ],
+            "correct": 0,
+            "explanation": "CORS controls how web pages from one domain can request resources from another domain."
+        },
+        {
+            "question": "What is the difference between localStorage and sessionStorage?",
+            "options": [
+                "They are the same thing",
+                "sessionStorage is larger",
+                "localStorage persists, sessionStorage is temporary",
+                "localStorage is faster"
+            ],
+            "correct": 2,
+            "explanation": "localStorage persists data until explicitly cleared, while sessionStorage data is cleared when the session ends."
+        },
+        {
+            "question": "What is the purpose of the DOCTYPE declaration?",
+            "options": [
+                "To link CSS files",
+                "To declare JavaScript",
+                "To define document title",
+                "To tell the browser which HTML version is being used"
+            ],
+            "correct": 3,
+            "explanation": "DOCTYPE declaration informs the browser about the HTML version being used, ensuring proper rendering."
+        },
+        {
+            "question": "What is the difference between display: none and visibility: hidden?",
+            "options": [
+                "Both keep space in layout",
+                "visibility: hidden removes from layout, display: none keeps space",
+                "They are the same",
+                "display: none removes from layout, visibility: hidden keeps space"
+            ],
+            "correct": 3,
+            "explanation": "display: none removes the element from layout flow, while visibility: hidden keeps the space but makes it invisible."
+        },
+        {
+            "question": "What is the purpose of async and defer in script tags?",
+            "options": [
+                "async loads immediately, defer waits for HTML",
+                "Both wait for HTML to load",
+                "They do the same thing",
+                "defer loads immediately, async waits for HTML"
+            ],
+            "correct": 0,
+            "explanation": "async downloads and executes immediately, while defer waits for HTML parsing to complete before executing."
+        },
+        {
+            "question": "What is the box model in CSS?",
+            "options": [
+                "Content, padding, border, and margin layout model",
+                "A 3D modeling tool",
+                "A type of container",
+                "A JavaScript framework"
+            ],
+            "correct": 0,
+            "explanation": "The box model describes how elements are laid out with content, padding, border, and margin."
+        },
+        {
+            "question": "What is the purpose of media queries?",
+            "options": [
+                "To query databases",
+                "To load images",
+                "To create responsive designs for different screen sizes",
+                "To play media files"
+            ],
+            "correct": 2,
+            "explanation": "Media queries allow CSS to apply different styles based on device characteristics like screen size."
+        },
+        {
+            "question": "What is event bubbling in JavaScript?",
+            "options": [
+                "Creating new events",
+                "Stopping events",
+                "Events triggering from child to parent elements",
+                "Removing events"
+            ],
+            "correct": 2,
+            "explanation": "Event bubbling is when an event triggers on a child element and propagates up through its parent elements."
+        },
+        {
+            "question": "What is the purpose of the 'use strict' directive?",
+            "options": [
+                "To enable strict mode and catch common mistakes",
+                "To make code run faster",
+                "To include external scripts",
+                "To compress code"
+            ],
+            "correct": 0,
+            "explanation": "'use strict' enables strict mode in JavaScript, which catches common mistakes and prevents unsafe actions."
+        },
+        {
+            "question": "What is the difference between let and var?",
+            "options": [
+                "var has block scope, let has function scope",
+                "Both have global scope",
+                "let has block scope, var has function scope",
+                "They are the same"
+            ],
+            "correct": 2,
+            "explanation": "let declares variables with block scope, while var declares variables with function scope and can be hoisted."
+        },
+        {
+            "question": "What is a Promise in JavaScript?",
+            "options": [
+                "A type of function",
+                "A way to store data",
+                "A guarantee of code quality",
+                "An object representing future completion of an async operation"
+            ],
+            "correct": 3,
+            "explanation": "A Promise is an object that represents the eventual completion (or failure) of an asynchronous operation."
+        },
+        {
+            "question": "What is the purpose of webpack?",
+            "options": [
+                "To create web pages",
+                "To bundle and manage web assets and dependencies",
+                "To test web applications",
+                "To deploy websites"
+            ],
+            "correct": 1,
+            "explanation": "Webpack is a module bundler that bundles JavaScript files and other assets for web applications."
+        },
+        {
+            "question": "What is the Virtual DOM?",
+            "options": [
+                "A web browser feature",
+                "A type of database",
+                "A lightweight copy of the real DOM for performance",
+                "A fake DOM"
+            ],
+            "correct": 2,
+            "explanation": "Virtual DOM is a lightweight copy of the real DOM used by frameworks like React for better performance."
+        },
+        {
+            "question": "What is a REST API?",
+            "options": [
+                "A testing framework",
+                "A database type",
+                "A way to rest applications",
+                "A standardized architecture for web APIs"
+            ],
+            "correct": 3,
+            "explanation": "REST is an architectural style for designing networked applications using HTTP methods."
+        },
+        {
+            "question": "What is JWT (JSON Web Token)?",
+            "options": [
+                "A type of database",
+                "A testing tool",
+                "A secure way to transmit information between parties",
+                "A JavaScript framework"
+            ],
+            "correct": 2,
+            "explanation": "JWT is a compact, URL-safe means of representing claims to be transferred between two parties."
+        },
+        {
+            "question": "What is the purpose of the 'srcset' attribute in img tags?",
+            "options": [
+                "To style images",
+                "To set image source",
+                "To set multiple sources for an image",
+                "To provide different images for different screen sizes"
+            ],
+            "correct": 3,
+            "explanation": "srcset allows you to specify multiple image sources for different screen sizes and resolutions."
+        },
+        {
+            "question": "What is CSS Grid?",
+            "options": [
+                "A type of responsive design",
+                "A grid of images",
+                "A CSS framework",
+                "A two-dimensional layout system"
+            ],
+            "correct": 3,
+            "explanation": "CSS Grid is a two-dimensional layout system that allows you to create complex grid-based layouts."
+        },
+        {
+            "question": "What is the purpose of the 'aria-label' attribute?",
+            "options": [
+                "To create form labels",
+                "To label images",
+                "To style labels",
+                "To provide text labels for screen readers"
+            ],
+            "correct": 3,
+            "explanation": "aria-label provides a text label for elements that screen readers can use, improving accessibility."
+        },
+        {
+            "question": "What is the difference between em and rem units?",
+            "options": [
+                "rem is relative to parent, em is relative to root",
+                "Both are relative to viewport",
+                "em is relative to parent, rem is relative to root",
+                "They are the same"
+            ],
+            "correct": 2,
+            "explanation": "em units are relative to the parent element's font size, while rem units are relative to the root element's font size."
+        },
+        {
+            "question": "What is the purpose of the meta viewport tag?",
+            "options": [
+                "To set page title",
+                "To define metadata",
+                "To control layout on mobile browsers",
+                "To create viewports"
+            ],
+            "correct": 2,
+            "explanation": "The meta viewport tag controls how mobile browsers scale and display the webpage."
+        },
+        {
+            "question": "What is the purpose of async/await in JavaScript?",
+            "options": [
+                "To create loops",
+                "To define functions",
+                "To handle asynchronous operations more cleanly",
+                "To make code run faster"
+            ],
+            "correct": 2,
+            "explanation": "async/await provides a cleaner syntax for handling promises and asynchronous operations in JavaScript."
+        },
+        {
+            "question": "What is React's Virtual DOM?",
+            "options": [
+                "A type of database",
+                "A JavaScript library",
+                "A browser feature",
+                "A lightweight copy of the actual DOM"
+            ],
+            "correct": 3,
+            "explanation": "The Virtual DOM is a lightweight copy of the actual DOM that React uses to optimize rendering performance."
+        },
+        {
+            "question": "What is the purpose of webpack?",
+            "options": [
+                "To bundle and manage web assets",
+                "To write web pages",
+                "To create databases",
+                "To style components"
+            ],
+            "correct": 0,
+            "explanation": "Webpack is a module bundler that bundles JavaScript files and other assets for usage in a browser."
+        },
+        {
+            "question": "What is CSS Grid?",
+            "options": [
+                "A grid of images",
+                "A type of responsive design",
+                "A two-dimensional layout system",
+                "A CSS framework"
+            ],
+            "correct": 2,
+            "explanation": "CSS Grid is a two-dimensional layout system that allows you to create complex grid-based layouts."
+        },
+        {
+            "question": "What is JWT (JSON Web Token)?",
+            "options": [
+                "A testing tool",
+                "A type of database",
+                "A JavaScript framework",
+                "A secure way to transmit information between parties"
+            ],
+            "correct": 3,
+            "explanation": "JWT is a compact, URL-safe means of representing claims to be transferred between two parties."
+        },
+        {
+            "question": "What is a Progressive Web App (PWA)?",
+            "options": [
+                "A mobile app",
+                "A web app that can work offline and provide native-like features",
+                "A desktop application",
+                "A type of website"
+            ],
+            "correct": 1,
+            "explanation": "PWAs are web applications that can work offline and provide features typically associated with native applications."
+        },
+        {
+            "question": "What is the purpose of service workers?",
+            "options": [
+                "To manage web servers",
+                "To enable offline functionality and background tasks",
+                "To create web services",
+                "To handle user input"
+            ],
+            "correct": 1,
+            "explanation": "Service workers enable offline functionality, push notifications, and background sync in web applications."
+        },
+        {
+            "question": "What is Redux in React applications?",
+            "options": [
+                "A testing tool",
+                "A UI framework",
+                "A state management library",
+                "A database"
+            ],
+            "correct": 2,
+            "explanation": "Redux is a predictable state container for JavaScript apps, commonly used with React for state management."
+        },
+        {
+            "question": "What is the purpose of TypeScript?",
+            "options": [
+                "To add static typing to JavaScript",
+                "To create styles",
+                "To write HTML",
+                "To manage databases"
+            ],
+            "correct": 0,
+            "explanation": "TypeScript adds optional static typing to JavaScript, helping catch errors early and improve code maintainability."
+        },
+        {
+            "question": "What is Server-Side Rendering (SSR)?",
+            "options": [
+                "A way to compress images",
+                "A database technology",
+                "Rendering pages on the client",
+                "Rendering pages on the server before sending to client"
+            ],
+            "correct": 3,
+            "explanation": "SSR generates the full HTML for a page on the server side before sending it to the client, improving initial load time and SEO."
+        },
+        {
+            "question": "What is the purpose of the Shadow DOM?",
+            "options": [
+                "To create encapsulated DOM trees within elements",
+                "To make elements invisible",
+                "To create 3D effects",
+                "To improve performance"
+            ],
+            "correct": 0,
+            "explanation": "Shadow DOM allows for encapsulation of DOM trees within web components, preventing style and script conflicts."
+        },
+        {
+            "question": "What is the role of a Service Worker?",
+            "options": [
+                "To manage databases",
+                "To handle background tasks and caching",
+                "To create web services",
+                "To work with servers"
+            ],
+            "correct": 1,
+            "explanation": "Service Workers act as a proxy between the web app, browser, and network, enabling offline functionality and background tasks."
+        },
+        {
+            "question": "What is the purpose of the IntersectionObserver API?",
+            "options": [
+                "To manage routing",
+                "To handle form validation",
+                "To detect when elements enter or leave the viewport",
+                "To observe network traffic"
+            ],
+            "correct": 2,
+            "explanation": "IntersectionObserver efficiently detects when elements enter or leave the viewport, useful for lazy loading and animations."
+        },
+        {
+            "question": "What is the role of Web Workers?",
+            "options": [
+                "To manage web servers",
+                "To style web pages",
+                "To handle HTTP requests",
+                "To run scripts in background threads"
+            ],
+            "correct": 3,
+            "explanation": "Web Workers allow running scripts in background threads, preventing UI blocking during heavy computations."
+        },
+        {
+            "question": "What is the purpose of the History API?",
+            "options": [
+                "To manipulate browser history and state",
+                "To store browsing history",
+                "To clear browser cache",
+                "To track user activity"
+            ],
+            "correct": 0,
+            "explanation": "The History API allows manipulation of browser history and state without page reloads, enabling SPA navigation."
+        },
+        {
+            "question": "What is the role of WebSockets?",
+            "options": [
+                "To style web pages",
+                "To establish two-way communication channels",
+                "To manage web servers",
+                "To handle HTTP requests"
+            ],
+            "correct": 1,
+            "explanation": "WebSockets provide full-duplex communication channels over a single TCP connection, enabling real-time data exchange."
+        },
+        {
+            "question": "What is the purpose of the requestAnimationFrame API?",
+            "options": [
+                "To load animations",
+                "To create 3D effects",
+                "To optimize animation performance",
+                "To manage video playback"
+            ],
+            "correct": 2,
+            "explanation": "requestAnimationFrame synchronizes animations with the browser's refresh rate for smooth performance."
+        },
+        {
+            "question": "What is the role of Content Security Policy (CSP)?",
+            "options": [
+                "To compress content",
+                "To cache content",
+                "To manage content delivery",
+                "To prevent injection attacks"
+            ],
+            "correct": 3,
+            "explanation": "CSP is a security layer that helps prevent XSS and other injection-based attacks by controlling resource loading."
+        },
+        {
+            "question": "What is the purpose of Web Components?",
+            "options": [
+                "To create reusable custom elements",
+                "To manage web servers",
+                "To handle routing",
+                "To optimize performance"
+            ],
+            "correct": 0,
+            "explanation": "Web Components allow creation of reusable custom elements with encapsulated functionality and styling."
+        },
+        {
+            "question": "What is GraphQL?",
+            "options": [
+                "A query language for APIs",
+                "A graph drawing library",
+                "A database system",
+                "A JavaScript framework"
+            ],
+            "correct": 0,
+            "explanation": "GraphQL is a query language for APIs that allows clients to request specific data, reducing over-fetching and under-fetching."
+        },
+        {
+            "question": "What is the purpose of the BEM naming convention in CSS?",
+            "options": [
+                "To minify CSS",
+                "To organize CSS classes using Block, Element, Modifier methodology",
+                "To create animations",
+                "To handle browser compatibility"
+            ],
+            "correct": 1,
+            "explanation": "BEM (Block Element Modifier) is a naming methodology that helps create reusable components through CSS class naming conventions."
+        },
+        {
+            "question": "What is the role of Next.js?",
+            "options": [
+                "A CSS framework",
+                "A testing library",
+                "A React framework for production",
+                "A database system"
+            ],
+            "correct": 2,
+            "explanation": "Next.js is a React framework that enables features like server-side rendering and static site generation for production applications."
+        },
+        {
+            "question": "What is the purpose of the Intersection Observer API?",
+            "options": [
+                "To manage routing",
+                "To handle forms",
+                "To validate data",
+                "To detect element visibility changes"
+            ],
+            "correct": 3,
+            "explanation": "The Intersection Observer API efficiently detects when elements enter or leave the viewport, useful for lazy loading and animations."
+        },
+        {
+            "question": "What is the role of Babel in web development?",
+            "options": [
+                "To transpile modern JavaScript to compatible versions",
+                "To bundle assets",
+                "To test code",
+                "To manage dependencies"
+            ],
+            "correct": 0,
+            "explanation": "Babel is a JavaScript compiler that converts modern JavaScript code into backwards compatible versions for older browsers."
+        },
+        {
+            "question": "What is the purpose of CSS Custom Properties (Variables)?",
+            "options": [
+                "To create animations",
+                "To store reusable values in CSS",
+                "To handle media queries",
+                "To manage layouts"
+            ],
+            "correct": 1,
+            "explanation": "CSS Custom Properties allow you to store values in variables that can be reused throughout your stylesheets."
+        },
+        {
+            "question": "What is the role of a CDN (Content Delivery Network)?",
+            "options": [
+                "To create content",
+                "To manage databases",
+                "To distribute content across multiple servers globally",
+                "To compress files"
+            ],
+            "correct": 2,
+            "explanation": "A CDN distributes content across multiple servers worldwide to reduce latency and improve website performance."
+        },
+        {
+            "question": "What is the purpose of the preload resource hint?",
+            "options": [
+                "To delay loading",
+                "To block rendering",
+                "To validate resources",
+                "To indicate high-priority resources to load early"
+            ],
+            "correct": 3,
+            "explanation": "The preload hint tells browsers to start loading critical resources early in the page lifecycle."
+        },
+        {
+            "question": "What is the role of ESLint?",
+            "options": [
+                "To find and fix JavaScript code problems",
+                "To compile code",
+                "To bundle assets",
+                "To manage dependencies"
+            ],
+            "correct": 0,
+            "explanation": "ESLint is a tool for identifying and fixing problems in JavaScript code, enforcing coding standards."
+        },
+        {
+            "question": "What is the purpose of the Web Storage API?",
+            "options": [
+                "To compress data",
+                "To store data in the browser",
+                "To manage server storage",
+                "To handle file uploads"
+            ],
+            "correct": 1,
+            "explanation": "The Web Storage API provides mechanisms for storing data in the browser, including localStorage and sessionStorage."
+        }
+    ]
+} 

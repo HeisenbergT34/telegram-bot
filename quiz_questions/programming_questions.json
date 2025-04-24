@@ -1,0 +1,275 @@
+{
+    "category": "programming",
+    "questions": [
+        {
+            "question": "What is the output of print(type([]))?",
+            "options": ["<class 'array'>", "<class 'tuple'>", "<class 'list'>", "<class 'set'>"],
+            "correct": 2,
+            "explanation": "In Python, [] creates a list object, so type([]) returns <class 'list'>"
+        },
+        {
+            "question": "What is the purpose of the __init__ method in Python?",
+            "options": [
+                "To define class methods",
+                "To delete class instances",
+                "To import modules",
+                "To initialize class variables"
+            ],
+            "correct": 3,
+            "explanation": "The __init__ method is a constructor that initializes new class instances and their attributes."
+        },
+        {
+            "question": "What is a decorator in Python?",
+            "options": [
+                "A class attribute",
+                "A type of loop",
+                "A design pattern",
+                "A function that modifies another function"
+            ],
+            "correct": 3,
+            "explanation": "A decorator is a function that takes another function as input and extends its behavior without explicitly modifying it."
+        },
+        {
+            "question": "What is the difference between a list and a tuple?",
+            "options": [
+                "Lists are mutable, tuples are immutable",
+                "Lists are faster than tuples",
+                "Tuples are mutable, lists are immutable",
+                "There is no difference"
+            ],
+            "correct": 0,
+            "explanation": "Lists are mutable (can be modified after creation) while tuples are immutable (cannot be modified after creation)."
+        },
+        {
+            "question": "What is the purpose of *args in Python?",
+            "options": [
+                "To create tuples",
+                "To pass a variable number of positional arguments",
+                "To multiply arguments",
+                "To unpack lists"
+            ],
+            "correct": 1,
+            "explanation": "*args allows a function to accept any number of positional arguments, which are packed into a tuple."
+        },
+        {
+            "question": "What is a generator in Python?",
+            "options": [
+                "A class that creates new instances",
+                "A tool for code generation",
+                "A function that yields values one at a time",
+                "A type of function that generates random numbers"
+            ],
+            "correct": 2,
+            "explanation": "A generator is a function that yields values one at a time instead of returning them all at once, saving memory."
+        },
+        {
+            "question": "What is the Global Interpreter Lock (GIL) in Python?",
+            "options": [
+                "A file locking system",
+                "A database lock",
+                "A global variable lock",
+                "A mechanism that allows only one thread to execute Python bytecode"
+            ],
+            "correct": 3,
+            "explanation": "The GIL is a mutex that protects access to Python objects, preventing multiple native threads from executing Python bytecode simultaneously."
+        },
+        {
+            "question": "What is the purpose of the 'with' statement in Python?",
+            "options": [
+                "To automatically manage resources",
+                "To define a new scope",
+                "To handle exceptions",
+                "To create loops"
+            ],
+            "correct": 0,
+            "explanation": "The 'with' statement is used for proper resource management, ensuring resources are properly acquired and released."
+        },
+        {
+            "question": "What is list comprehension in Python?",
+            "options": [
+                "A method to sort lists",
+                "A way to merge lists",
+                "A concise way to create lists based on existing iterables",
+                "A way to understand lists better"
+            ],
+            "correct": 2,
+            "explanation": "List comprehension provides a concise way to create new lists based on existing iterables using a single line of code."
+        },
+        {
+            "question": "What is the difference between '==' and 'is' in Python?",
+            "options": [
+                "'is' compares values, '==' compares identity",
+                "Both compare identity",
+                "They are identical",
+                "'==' compares values, 'is' compares identity"
+            ],
+            "correct": 3,
+            "explanation": "'==' compares the values of objects, while 'is' compares their identity (memory location)."
+        },
+        {
+            "question": "What is the purpose of __str__ vs __repr__ in Python?",
+            "options": [
+                "Both are for developers",
+                "__repr__ is for users, __str__ is for developers",
+                "__str__ is for users, __repr__ is for developers",
+                "They are the same"
+            ],
+            "correct": 2,
+            "explanation": "__str__ provides a readable string representation for users, while __repr__ provides a detailed representation for developers."
+        },
+        {
+            "question": "What is the purpose of the 'pass' statement in Python?",
+            "options": [
+                "To pass values between functions",
+                "To do nothing and act as a placeholder",
+                "To skip the rest of a loop",
+                "To pass control to another function"
+            ],
+            "correct": 1,
+            "explanation": "The 'pass' statement is a null operation used as a placeholder where syntax requires a statement but no code needs to be executed."
+        },
+        {
+            "question": "What is duck typing in Python?",
+            "options": [
+                "Type checking at runtime based on object behavior",
+                "A type of inheritance",
+                "A naming convention",
+                "A way to handle ducks in code"
+            ],
+            "correct": 0,
+            "explanation": "Duck typing means Python looks at object behavior (methods and properties) rather than type for operation compatibility."
+        },
+        {
+            "question": "What is the purpose of virtual environments in Python?",
+            "options": [
+                "To speed up Python code",
+                "To compress Python files",
+                "To create virtual machines",
+                "To isolate project dependencies"
+            ],
+            "correct": 3,
+            "explanation": "Virtual environments create isolated Python environments where you can install specific package versions without affecting other projects."
+        },
+        {
+            "question": "What is the difference between append() and extend() for lists?",
+            "options": [
+                "extend() is faster",
+                "They are identical",
+                "append() adds one element, extend() adds multiple elements",
+                "append() uses less memory"
+            ],
+            "correct": 2,
+            "explanation": "append() adds a single element to the end of a list, while extend() adds all elements from an iterable to the list."
+        },
+        {
+            "question": "What is the time complexity of accessing a dictionary value by key in Python?",
+            "options": [
+                "O(n)",
+                "O(log n)",
+                "O(n^2)",
+                "O(1)"
+            ],
+            "correct": 3,
+            "explanation": "Dictionary lookups by key in Python have O(1) average time complexity due to hash table implementation."
+        },
+        {
+            "question": "What is a context manager in Python?",
+            "options": [
+                "A class that implements __enter__ and __exit__ methods",
+                "A type of loop",
+                "A way to manage global variables",
+                "A file management system"
+            ],
+            "correct": 0,
+            "explanation": "A context manager is a class that implements __enter__ and __exit__ methods to manage resource allocation and cleanup."
+        },
+        {
+            "question": "What is the purpose of the @property decorator?",
+            "options": [
+                "To create static methods",
+                "To make methods behave like attributes",
+                "To validate class properties",
+                "To create class methods"
+            ],
+            "correct": 1,
+            "explanation": "@property allows methods to be accessed like attributes while maintaining control over getting, setting, and deleting values."
+        },
+        {
+            "question": "What is method resolution order (MRO) in Python?",
+            "options": [
+                "A way to sort methods",
+                "A type of method calling",
+                "The order in which base classes are searched for methods",
+                "A method naming convention"
+            ],
+            "correct": 2,
+            "explanation": "MRO defines the order in which Python searches for methods in a class hierarchy with multiple inheritance."
+        },
+        {
+            "question": "What is the purpose of the @staticmethod decorator?",
+            "options": [
+                "To create instance methods",
+                "To create class properties",
+                "To manage static files",
+                "To create methods that don't need self or cls"
+            ],
+            "correct": 3,
+            "explanation": "@staticmethod creates methods that don't require access to instance or class attributes."
+        },
+        {
+            "question": "What is a lambda function in Python?",
+            "options": [
+                "An anonymous, single-expression function",
+                "A type of class",
+                "A way to handle exceptions",
+                "A built-in function"
+            ],
+            "correct": 0,
+            "explanation": "Lambda functions are small anonymous functions defined using the lambda keyword, containing a single expression."
+        },
+        {
+            "question": "What is the purpose of the __slots__ attribute?",
+            "options": [
+                "To create class methods",
+                "To optimize memory usage by restricting attributes",
+                "To define class properties",
+                "To manage method slots"
+            ],
+            "correct": 1,
+            "explanation": "__slots__ restricts which attributes a class can have, reducing memory usage and improving access speed."
+        },
+        {
+            "question": "What is the difference between shallow and deep copy?",
+            "options": [
+                "No difference",
+                "Deep copy is faster",
+                "Shallow copy references nested objects, deep copy duplicates them",
+                "Shallow copy uses less memory"
+            ],
+            "correct": 2,
+            "explanation": "Shallow copy creates a new object but references nested objects, while deep copy creates new copies of nested objects."
+        },
+        {
+            "question": "What is the purpose of the __call__ method?",
+            "options": [
+                "To call other methods",
+                "To initialize objects",
+                "To delete objects",
+                "To make instances callable like functions"
+            ],
+            "correct": 3,
+            "explanation": "__call__ allows class instances to be called like functions, enabling function-like behavior for objects."
+        },
+        {
+            "question": "What is the purpose of the @classmethod decorator?",
+            "options": [
+                "To create methods that work with the class itself",
+                "To create static methods",
+                "To create instance methods",
+                "To create class properties"
+            ],
+            "correct": 0,
+            "explanation": "@classmethod creates methods that receive the class as the first argument (cls) instead of the instance (self)."
+        }
+    ]
+} 

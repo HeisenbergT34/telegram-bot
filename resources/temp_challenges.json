@@ -1,0 +1,155 @@
+{
+    "easy": [
+        {
+            "id": "p46",
+            "category": "programming",
+            "title": "List Sum",
+            "description": "Calculate and print the sum of all numbers in the list [1, 2, 3, 4, 5] using the sum() function.",
+            "answer": "numbers = [1, 2, 3, 4, 5]\nprint(sum(numbers))",
+            "hint": "Use the sum() function with a list of numbers.",
+            "points": 5,
+            "explanation": "The sum() function adds up all the numbers in an iterable.",
+            "key_points": "- List operations\n- Built-in functions\n- Number summation"
+        },
+        {
+            "id": "p47",
+            "category": "programming",
+            "title": "String Concatenation",
+            "description": "Create two variables 'first_name' and 'last_name' with your names, then concatenate them with a space in between to create a full name.",
+            "answer": "first_name = 'John'\nlast_name = 'Doe'\nfull_name = first_name + ' ' + last_name\nprint(full_name)",
+            "hint": "Use the + operator to join strings and add a space between the names.",
+            "points": 5,
+            "explanation": "String concatenation allows you to combine multiple strings into one.",
+            "key_points": "- String operations\n- Variable assignment\n- String concatenation"
+        },
+        {
+            "id": "p48",
+            "category": "programming",
+            "title": "Even Number Check",
+            "description": "Write a program that checks if a number is even. Use the number 8 and print 'Even' if it is even.",
+            "answer": "number = 8\nif number % 2 == 0:\n    print('Even')",
+            "hint": "Use the modulo operator (%) to check if a number is divisible by 2.",
+            "points": 5,
+            "explanation": "The modulo operator returns the remainder of division. If a number divided by 2 has no remainder, it's even.",
+            "key_points": "- Conditional statements\n- Modulo operator\n- Number properties"
+        },
+        {
+            "id": "p49",
+            "category": "programming",
+            "title": "List Element Count",
+            "description": "Count how many times the number 3 appears in the list [1, 2, 3, 3, 4, 3, 5] using the count() method.",
+            "answer": "numbers = [1, 2, 3, 3, 4, 3, 5]\nprint(numbers.count(3))",
+            "hint": "Use the count() method on the list to find occurrences of a specific value.",
+            "points": 5,
+            "explanation": "The count() method returns the number of times a specified value appears in a list.",
+            "key_points": "- List methods\n- Element counting\n- List operations"
+        },
+        {
+            "id": "p50",
+            "category": "programming",
+            "title": "String Uppercase",
+            "description": "Convert the string 'hello world' to uppercase using a string method.",
+            "answer": "text = 'hello world'\nprint(text.upper())",
+            "hint": "Use the upper() method to convert a string to uppercase.",
+            "points": 5,
+            "explanation": "The upper() method returns a copy of the string with all characters in uppercase.",
+            "key_points": "- String methods\n- Case conversion\n- String manipulation"
+        }
+    ],
+    "security": {
+        "easy": [
+            {
+                "id": "s1",
+                "category": "security",
+                "title": "Password Validator",
+                "description": "Create a function that checks if a password meets these criteria:\n- At least 8 characters long\n- Contains at least one uppercase letter\n- Contains at least one number\n- Contains at least one special character",
+                "hint": "Use regular expressions or string methods to check each requirement.",
+                "points": 5,
+                "explanation": "Password validation is crucial for security.",
+                "key_points": "- String manipulation\n- Security best practices\n- Input validation"
+            },
+            {
+                "id": "s2",
+                "category": "security",
+                "title": "Input Sanitizer",
+                "description": "Create a function that sanitizes user input by removing HTML tags and special characters.",
+                "hint": "Use string replacement or regular expressions to clean the input.",
+                "points": 5,
+                "explanation": "Input sanitization prevents XSS attacks.",
+                "key_points": "- Security\n- Input handling\n- String manipulation"
+            }
+        ],
+        "medium": [
+            {
+                "id": "s3",
+                "category": "security",
+                "title": "Token Generator",
+                "description": "Create a secure random token generator for user authentication.",
+                "hint": "Use cryptographic functions to generate secure random values.",
+                "points": 10,
+                "explanation": "Secure tokens are essential for user authentication.",
+                "key_points": "- Cryptography\n- Authentication\n- Security"
+            }
+        ],
+        "hard": [
+            {
+                "id": "s4",
+                "category": "security",
+                "title": "Encryption Implementation",
+                "description": "Implement a simple encryption/decryption system using a symmetric key.",
+                "hint": "Research symmetric encryption algorithms and their implementation.",
+                "points": 15,
+                "explanation": "Understanding encryption is crucial for data security.",
+                "key_points": "- Encryption\n- Cryptography\n- Data security"
+            }
+        ]
+    },
+    "web_development": {
+        "easy": [
+            {
+                "id": "w1",
+                "category": "web_development",
+                "title": "Responsive Navigation",
+                "description": "Create a responsive navigation bar that works on both desktop and mobile devices.",
+                "hint": "Use CSS media queries and flexbox/grid for layout.",
+                "points": 5,
+                "explanation": "Responsive design is essential for modern web development.",
+                "key_points": "- HTML/CSS\n- Responsive design\n- Mobile-first"
+            },
+            {
+                "id": "w2",
+                "category": "web_development",
+                "title": "Form Validator",
+                "description": "Create a form with client-side validation for email and password fields.",
+                "hint": "Use JavaScript to validate form inputs before submission.",
+                "points": 5,
+                "explanation": "Form validation improves user experience and data quality.",
+                "key_points": "- JavaScript\n- Form handling\n- Input validation"
+            }
+        ],
+        "medium": [
+            {
+                "id": "w3",
+                "category": "web_development",
+                "title": "API Consumer",
+                "description": "Create a web page that fetches and displays data from a public API.",
+                "hint": "Use fetch or axios to make API requests.",
+                "points": 10,
+                "explanation": "API integration is a common web development task.",
+                "key_points": "- APIs\n- Async JavaScript\n- Data handling"
+            }
+        ],
+        "hard": [
+            {
+                "id": "w4",
+                "category": "web_development",
+                "title": "Real-time Chat",
+                "description": "Build a simple real-time chat application using WebSocket.",
+                "hint": "Use WebSocket or Socket.io for real-time communication.",
+                "points": 15,
+                "explanation": "Real-time features are important for modern web apps.",
+                "key_points": "- WebSocket\n- Real-time\n- Full-stack"
+            }
+        ]
+    }
+}

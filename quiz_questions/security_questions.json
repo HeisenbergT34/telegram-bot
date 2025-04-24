@@ -1,0 +1,390 @@
+{
+    "category": "security",
+    "questions": [
+        {
+            "question": "What is Cross-Site Scripting (XSS)?",
+            "options": [
+                "A type of injection attack where malicious scripts are inserted into trusted websites",
+                "A method of encrypting website data",
+                "A technique for cross-domain resource sharing",
+                "A way to optimize website loading speed"
+            ],
+            "correct": 0,
+            "explanation": "XSS allows attackers to inject malicious client-side scripts into web pages viewed by other users."
+        },
+        {
+            "question": "What is a buffer overflow attack?",
+            "options": [
+                "When memory is full",
+                "When network traffic exceeds capacity",
+                "When a buffer is empty",
+                "When a program writes more data than allocated space"
+            ],
+            "correct": 3,
+            "explanation": "A buffer overflow occurs when a program writes more data to a buffer than it can hold, potentially overwriting adjacent memory."
+        },
+        {
+            "question": "What is SQL Injection?",
+            "options": [
+                "A way to backup SQL databases",
+                "A type of database design",
+                "Inserting malicious SQL code into queries",
+                "A technique to optimize SQL queries"
+            ],
+            "correct": 2,
+            "explanation": "SQL Injection is an attack where malicious SQL code is inserted into application queries to manipulate the database."
+        },
+        {
+            "question": "What is the purpose of HTTPS?",
+            "options": [
+                "To encrypt data in transit",
+                "To compress data",
+                "To make websites faster",
+                "To store website data"
+            ],
+            "correct": 0,
+            "explanation": "HTTPS encrypts data transmitted between client and server to prevent eavesdropping and tampering."
+        },
+        {
+            "question": "What is a Man-in-the-Middle (MITM) attack?",
+            "options": [
+                "A type of virus",
+                "A hardware failure",
+                "Intercepting communication between two parties",
+                "A physical security breach"
+            ],
+            "correct": 2,
+            "explanation": "MITM attacks occur when an attacker secretly intercepts and possibly alters communication between two parties."
+        },
+        {
+            "question": "What is phishing?",
+            "options": [
+                "Attempting to steal sensitive information by deception",
+                "A network protocol",
+                "A type of encryption",
+                "A type of fishing"
+            ],
+            "correct": 0,
+            "explanation": "Phishing is a cyber attack that uses deception to steal sensitive information by masquerading as a trustworthy entity."
+        },
+        {
+            "question": "What is two-factor authentication (2FA)?",
+            "options": [
+                "Two-step registration",
+                "Using two different factors for authentication",
+                "Double encryption",
+                "Using two passwords"
+            ],
+            "correct": 1,
+            "explanation": "2FA requires two different types of authentication factors (something you know, have, or are) to verify identity."
+        },
+        {
+            "question": "What is a DDoS attack?",
+            "options": [
+                "A type of virus",
+                "Overwhelming a system with traffic from multiple sources",
+                "A security protocol",
+                "A type of encryption"
+            ],
+            "correct": 1,
+            "explanation": "A DDoS (Distributed Denial of Service) attack overwhelms a system with traffic from multiple sources to make it unavailable."
+        },
+        {
+            "question": "What is the principle of least privilege?",
+            "options": [
+                "Restricting all access",
+                "A type of authentication",
+                "Giving users minimum necessary permissions",
+                "Giving users all permissions"
+            ],
+            "correct": 2,
+            "explanation": "The principle of least privilege means giving users only the minimum permissions they need to perform their tasks."
+        },
+        {
+            "question": "What is a zero-day vulnerability?",
+            "options": [
+                "A vulnerability that's been patched",
+                "A vulnerability unknown to the software vendor",
+                "A vulnerability that takes no time to exploit",
+                "A vulnerability in new software"
+            ],
+            "correct": 1,
+            "explanation": "A zero-day vulnerability is a security flaw unknown to the software vendor and therefore has no patch available."
+        },
+        {
+            "question": "What is social engineering?",
+            "options": [
+                "A type of software engineering",
+                "Building social networks",
+                "Manipulating people to divulge information",
+                "A type of encryption"
+            ],
+            "correct": 2,
+            "explanation": "Social engineering is the art of manipulating people into divulging confidential information or performing actions."
+        },
+        {
+            "question": "What is a brute force attack?",
+            "options": [
+                "Systematically trying all possible passwords",
+                "A network protocol",
+                "A type of virus",
+                "A physical attack on hardware"
+            ],
+            "correct": 0,
+            "explanation": "A brute force attack attempts to find correct passwords by systematically trying every possible combination."
+        },
+        {
+            "question": "What is a honeypot in cybersecurity?",
+            "options": [
+                "A system designed to attract attackers",
+                "A type of malware",
+                "A security protocol",
+                "A type of firewall"
+            ],
+            "correct": 0,
+            "explanation": "A honeypot is a security mechanism set to detect, deflect, or study hacking attempts by appearing to be a legitimate target."
+        },
+        {
+            "question": "What is the purpose of a WAF (Web Application Firewall)?",
+            "options": [
+                "To manage databases",
+                "To store website data",
+                "To filter and monitor HTTP traffic",
+                "To speed up websites"
+            ],
+            "correct": 2,
+            "explanation": "A WAF protects web applications by filtering and monitoring HTTP traffic between the app and the Internet."
+        },
+        {
+            "question": "What is SSL/TLS?",
+            "options": [
+                "A type of database",
+                "A type of firewall",
+                "Protocols for secure communication",
+                "A programming language"
+            ],
+            "correct": 2,
+            "explanation": "SSL/TLS are cryptographic protocols designed to provide secure communication over a computer network."
+        },
+        {
+            "question": "What is CSRF (Cross-Site Request Forgery)?",
+            "options": [
+                "A type of authentication",
+                "A malicious site forcing a user's browser to make unwanted requests",
+                "A way to encrypt data",
+                "A method of password storage"
+            ],
+            "correct": 1,
+            "explanation": "CSRF tricks the victim's browser into making unwanted requests to a website where they're authenticated."
+        },
+        {
+            "question": "What is the purpose of Content Security Policy (CSP)?",
+            "options": [
+                "To manage content delivery",
+                "To optimize content loading",
+                "To prevent XSS and other injection attacks",
+                "To compress content"
+            ],
+            "correct": 2,
+            "explanation": "CSP is a security layer that helps detect and prevent XSS and other injection-based attacks."
+        },
+        {
+            "question": "What is a salt in password hashing?",
+            "options": [
+                "A random string added to passwords before hashing",
+                "A type of encryption",
+                "A way to decrypt passwords",
+                "A password policy"
+            ],
+            "correct": 0,
+            "explanation": "A salt is random data added to passwords before hashing to prevent rainbow table attacks."
+        },
+        {
+            "question": "What is RBAC (Role-Based Access Control)?",
+            "options": [
+                "A type of encryption",
+                "A backup system",
+                "A way to track users",
+                "A system of assigning permissions based on roles"
+            ],
+            "correct": 3,
+            "explanation": "RBAC manages access to resources by assigning permissions to roles rather than individual users."
+        },
+        {
+            "question": "What is DNS poisoning?",
+            "options": [
+                "Corrupting DNS cache to redirect traffic",
+                "A virus type",
+                "A way to speed up DNS",
+                "A DNS backup method"
+            ],
+            "correct": 0,
+            "explanation": "DNS poisoning involves corrupting a DNS cache to redirect traffic to malicious websites."
+        },
+        {
+            "question": "What is a reverse proxy?",
+            "options": [
+                "A type of firewall",
+                "A caching system",
+                "A server that retrieves resources on behalf of clients",
+                "A proxy that works backwards"
+            ],
+            "correct": 2,
+            "explanation": "A reverse proxy retrieves resources from servers on behalf of clients, providing security and load balancing."
+        },
+        {
+            "question": "What is HSTS (HTTP Strict Transport Security)?",
+            "options": [
+                "A type of HTTP compression",
+                "A way to cache HTTP requests",
+                "A method to speed up HTTPS",
+                "A policy forcing browsers to use HTTPS"
+            ],
+            "correct": 3,
+            "explanation": "HSTS is a security policy that forces browsers to use HTTPS instead of HTTP when communicating with the server."
+        },
+        {
+            "question": "What is defense in depth?",
+            "options": [
+                "Using multiple layers of security controls",
+                "A deep learning security system",
+                "A type of firewall",
+                "A way to secure databases"
+            ],
+            "correct": 0,
+            "explanation": "Defense in depth is a strategy of using multiple layers of security controls to protect resources."
+        },
+        {
+            "question": "What is a security audit?",
+            "options": [
+                "Daily security checks",
+                "Installing security software",
+                "A systematic evaluation of system security",
+                "Updating passwords"
+            ],
+            "correct": 2,
+            "explanation": "A security audit is a systematic evaluation of the security of a system against established criteria."
+        },
+        {
+            "question": "What is sandboxing in security?",
+            "options": [
+                "Testing in production",
+                "Running backups",
+                "Testing security tools",
+                "Isolating programs to run in a restricted environment"
+            ],
+            "correct": 3,
+            "explanation": "Sandboxing runs programs in isolated environments to prevent them from harming the system."
+        },
+        {
+            "question": "What is OAuth 2.0?",
+            "options": [
+                "An authorization framework for secure API access",
+                "A type of encryption",
+                "A password hashing algorithm",
+                "A network protocol"
+            ],
+            "correct": 0,
+            "explanation": "OAuth 2.0 is a framework that enables applications to obtain limited access to user accounts on other services."
+        },
+        {
+            "question": "What is the purpose of CAPTCHA?",
+            "options": [
+                "To encrypt data",
+                "To distinguish between humans and automated bots",
+                "To compress files",
+                "To scan for viruses"
+            ],
+            "correct": 1,
+            "explanation": "CAPTCHA helps prevent automated bots from accessing websites by requiring human verification."
+        },
+        {
+            "question": "What is a security token?",
+            "options": [
+                "A type of password",
+                "A physical key",
+                "A digital credential for authentication",
+                "A network protocol"
+            ],
+            "correct": 2,
+            "explanation": "A security token is a digital credential that provides additional authentication or authorization information."
+        },
+        {
+            "question": "What is the purpose of rate limiting?",
+            "options": [
+                "To limit bandwidth usage",
+                "To restrict file sizes",
+                "To manage memory usage",
+                "To prevent abuse by limiting request frequency"
+            ],
+            "correct": 3,
+            "explanation": "Rate limiting prevents abuse by restricting how many requests a user or IP can make within a time period."
+        },
+        {
+            "question": "What is certificate pinning?",
+            "options": [
+                "A method to validate SSL/TLS certificates against known good certificates",
+                "A way to store certificates",
+                "A type of encryption",
+                "A certificate management system"
+            ],
+            "correct": 0,
+            "explanation": "Certificate pinning associates a host with its expected certificate or public key to prevent MITM attacks."
+        },
+        {
+            "question": "What is the purpose of DMARC?",
+            "options": [
+                "To encrypt emails",
+                "To prevent email spoofing and phishing",
+                "To compress email attachments",
+                "To scan emails for viruses"
+            ],
+            "correct": 1,
+            "explanation": "DMARC is an email authentication protocol that helps prevent email spoofing and phishing attacks."
+        },
+        {
+            "question": "What is a security audit log?",
+            "options": [
+                "A type of encryption",
+                "A security policy",
+                "A record of security-relevant events and activities",
+                "A network monitoring tool"
+            ],
+            "correct": 2,
+            "explanation": "A security audit log maintains records of security-relevant events for monitoring and compliance purposes."
+        },
+        {
+            "question": "What is the purpose of HSTS (HTTP Strict Transport Security)?",
+            "options": [
+                "To compress HTTP traffic",
+                "To cache HTTP requests",
+                "To monitor HTTP traffic",
+                "To force browsers to use HTTPS connections"
+            ],
+            "correct": 3,
+            "explanation": "HSTS is a security policy that forces browsers to use HTTPS instead of HTTP when communicating with the server."
+        },
+        {
+            "question": "What is a web application firewall (WAF)?",
+            "options": [
+                "A security tool that filters and monitors HTTP traffic",
+                "A network firewall",
+                "A type of antivirus",
+                "A logging system"
+            ],
+            "correct": 0,
+            "explanation": "A WAF protects web applications by filtering and monitoring HTTP traffic between the app and the Internet."
+        },
+        {
+            "question": "What is the principle of defense in depth?",
+            "options": [
+                "A type of encryption",
+                "Using multiple layers of security controls",
+                "A way to secure databases",
+                "A network protocol"
+            ],
+            "correct": 1,
+            "explanation": "Defense in depth involves using multiple layers of security controls to protect resources and data."
+        }
+    ]
+} 

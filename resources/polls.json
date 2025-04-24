@@ -1,0 +1,92 @@
+{
+    "programming_polls": [
+        {
+            "id": "poll1",
+            "category": "Programming Languages",
+            "question": "Which programming language do you use most often?",
+            "options": ["Python", "JavaScript", "Java", "C++", "Other"],
+            "multiple_answers": false,
+            "type": "regular"
+        },
+        {
+            "id": "poll2",
+            "category": "Development Tools",
+            "question": "What's your favorite code editor/IDE?",
+            "options": ["VS Code", "PyCharm", "Sublime Text", "IntelliJ", "Other"],
+            "multiple_answers": false,
+            "type": "regular"
+        }
+    ],
+    "learning_polls": [
+        {
+            "id": "poll3",
+            "category": "Learning Methods",
+            "question": "How do you prefer to learn programming?",
+            "options": ["Video Tutorials", "Documentation", "Books", "Practice Projects", "Courses"],
+            "multiple_answers": true,
+            "type": "regular"
+        },
+        {
+            "id": "poll4",
+            "category": "Learning Challenges",
+            "question": "What's your biggest challenge in learning to code?",
+            "options": ["Time Management", "Complex Concepts", "Finding Resources", "Practice Opportunities", "Language Barrier"],
+            "multiple_answers": true,
+            "type": "regular"
+        }
+    ],
+    "career_polls": [
+        {
+            "id": "poll5",
+            "category": "Career Goals",
+            "question": "Which tech field interests you most?",
+            "options": ["Web Development", "Mobile Apps", "Data Science", "Cybersecurity", "AI/ML"],
+            "multiple_answers": true,
+            "type": "regular"
+        },
+        {
+            "id": "poll6",
+            "category": "Experience Level",
+            "question": "How long have you been coding?",
+            "options": ["Just Started", "< 1 Year", "1-3 Years", "3-5 Years", "5+ Years"],
+            "multiple_answers": false,
+            "type": "regular"
+        }
+    ],
+    "technology_polls": [
+        {
+            "id": "poll7",
+            "category": "Cloud Platforms",
+            "question": "Which cloud platform do you use most?",
+            "options": ["AWS", "Google Cloud", "Azure", "DigitalOcean", "None Yet"],
+            "multiple_answers": false,
+            "type": "regular"
+        },
+        {
+            "id": "poll8",
+            "category": "Version Control",
+            "question": "What's your preferred version control system?",
+            "options": ["Git", "SVN", "Mercurial", "Other", "Don't use VCS"],
+            "multiple_answers": false,
+            "type": "regular"
+        }
+    ],
+    "community_polls": [
+        {
+            "id": "poll9",
+            "category": "Community Engagement",
+            "question": "How do you contribute to the developer community?",
+            "options": ["Open Source", "Mentoring", "Writing Blogs", "Answering Questions", "Not Yet Active"],
+            "multiple_answers": true,
+            "type": "regular"
+        },
+        {
+            "id": "poll10",
+            "category": "Help Preferences",
+            "question": "How do you prefer to help other developers?",
+            "options": ["Code Reviews", "Pair Programming", "Teaching Concepts", "Sharing Resources", "Technical Writing"],
+            "multiple_answers": true,
+            "type": "regular"
+        }
+    ]
+} 

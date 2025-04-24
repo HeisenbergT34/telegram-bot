@@ -1,0 +1,994 @@
+{
+    "categories": {
+        "cybersecurity": {
+            "authentication": [
+                {
+                    "id": "auth_001",
+                    "title": "Password Best Practices",
+                    "tip": "Never store passwords in plain text. Always use strong hashing algorithms like bcrypt with appropriate salt.",
+                    "explanation": "Plain text passwords are a major security risk. Hashing with salt prevents rainbow table attacks and protects user credentials even if the database is compromised.",
+                    "example": "Use: password_hash('user_password', PASSWORD_BCRYPT)",
+                    "importance": "Critical",
+                    "tags": ["passwords", "hashing", "security"]
+                },
+                {
+                    "id": "auth_002",
+                    "title": "Multi-Factor Authentication",
+                    "tip": "Always implement MFA for sensitive operations and admin accounts.",
+                    "explanation": "MFA adds an extra layer of security by requiring something you know (password) and something you have (phone/token).",
+                    "example": "Implement TOTP (Time-based One-Time Password) or SMS verification",
+                    "importance": "High",
+                    "tags": ["mfa", "authentication", "security"]
+                },
+                {
+                    "id": "auth_003",
+                    "title": "Session Management",
+                    "tip": "Implement secure session handling with proper timeout and rotation.",
+                    "explanation": "Secure session management prevents session hijacking and ensures user sessions remain protected.",
+                    "example": "Set session.cookie_secure=True and implement session rotation after login",
+                    "importance": "High",
+                    "tags": ["sessions", "security", "web"]
+                },
+                {
+                    "id": "auth_004",
+                    "title": "Password Recovery",
+                    "tip": "Implement secure password recovery with time-limited tokens.",
+                    "explanation": "Password reset tokens should be random, time-limited, and single-use to prevent abuse.",
+                    "example": "Generate a random token with expiry and send via email only",
+                    "importance": "High",
+                    "tags": ["password-reset", "security", "authentication"]
+                },
+                {
+                    "id": "auth_005",
+                    "title": "OAuth Security",
+                    "tip": "Validate OAuth tokens and check scopes before granting access.",
+                    "explanation": "OAuth token validation prevents unauthorized access and token replay attacks.",
+                    "example": "Verify token signature and expiry before allowing access",
+                    "importance": "Critical",
+                    "tags": ["oauth", "tokens", "authentication"]
+                },
+                {
+                    "id": "auth_006",
+                    "title": "Password Policies",
+                    "tip": "Implement strong password policies with minimum length and complexity.",
+                    "explanation": "Strong password policies help prevent brute force attacks.",
+                    "example": "Require 12+ chars with mix of upper, lower, numbers, symbols",
+                    "importance": "High",
+                    "tags": ["passwords", "policy", "security"]
+                },
+                {
+                    "id": "auth_007",
+                    "title": "Brute Force Protection",
+                    "tip": "Implement account lockout after failed login attempts.",
+                    "explanation": "Account lockout prevents automated password guessing.",
+                    "example": "Lock for 15 minutes after 5 failed attempts",
+                    "importance": "High",
+                    "tags": ["brute-force", "security", "authentication"]
+                },
+                {
+                    "id": "auth_008",
+                    "title": "Password Storage",
+                    "tip": "Use Argon2 or bcrypt for password hashing.",
+                    "explanation": "Modern hashing algorithms provide better protection against cracking.",
+                    "example": "Use Argon2id with appropriate memory and time cost",
+                    "importance": "Critical",
+                    "tags": ["passwords", "hashing", "security"]
+                },
+                {
+                    "id": "auth_009",
+                    "title": "Session Security",
+                    "tip": "Use secure session IDs and implement proper timeout.",
+                    "explanation": "Secure sessions prevent hijacking and unauthorized access.",
+                    "example": "Use random 128-bit session IDs with 30-minute timeout",
+                    "importance": "High",
+                    "tags": ["sessions", "security", "web"]
+                }
+            ],
+            "network_security": [
+                {
+                    "id": "net_001",
+                    "title": "HTTPS Everywhere",
+                    "tip": "Always use HTTPS for web applications and redirect HTTP to HTTPS automatically.",
+                    "explanation": "HTTPS encrypts data in transit, preventing man-in-the-middle attacks and data interception.",
+                    "example": "Enable HSTS and configure automatic HTTP to HTTPS redirection",
+                    "importance": "Critical",
+                    "tags": ["https", "encryption", "web"]
+                },
+                {
+                    "id": "net_002",
+                    "title": "Firewall Configuration",
+                    "tip": "Follow the principle of least privilege when configuring firewall rules.",
+                    "explanation": "Only open necessary ports and restrict access to trusted IP ranges to minimize attack surface.",
+                    "example": "Allow only port 443 for web traffic and restrict admin ports to VPN IPs",
+                    "importance": "High",
+                    "tags": ["firewall", "network", "security"]
+                },
+                {
+                    "id": "net_003",
+                    "title": "Network Segmentation",
+                    "tip": "Implement proper network segmentation to isolate sensitive systems.",
+                    "explanation": "Network segmentation limits the impact of breaches and helps contain security incidents.",
+                    "example": "Use VLANs to separate production, development, and admin networks",
+                    "importance": "High",
+                    "tags": ["network", "segmentation", "security"]
+                },
+                {
+                    "id": "net_004",
+                    "title": "Rate Limiting",
+                    "tip": "Implement rate limiting on all public endpoints.",
+                    "explanation": "Rate limiting prevents abuse and DoS attacks by limiting request frequency.",
+                    "example": "Limit to 100 requests per IP per minute",
+                    "importance": "High",
+                    "tags": ["rate-limit", "dos-prevention", "api-security"]
+                },
+                {
+                    "id": "net_005",
+                    "title": "VPN Access",
+                    "tip": "Use VPN for remote access to internal resources.",
+                    "explanation": "VPNs provide secure encrypted access to internal networks.",
+                    "example": "Configure OpenVPN with certificate authentication",
+                    "importance": "High",
+                    "tags": ["vpn", "remote-access", "network-security"]
+                }
+            ],
+            "application_security": [
+                {
+                    "id": "app_001",
+                    "title": "Input Validation",
+                    "tip": "Never trust user input. Validate and sanitize all data on both client and server side.",
+                    "explanation": "Proper input validation prevents SQL injection, XSS, and other injection attacks.",
+                    "example": "Use parameterized queries and HTML escape user-generated content",
+                    "importance": "Critical",
+                    "tags": ["validation", "injection", "security"]
+                },
+                {
+                    "id": "app_002",
+                    "title": "Error Handling",
+                    "tip": "Implement proper error handling without exposing sensitive information.",
+                    "explanation": "Detailed error messages can reveal system information to attackers. Use generic error messages for users.",
+                    "example": "Log detailed errors server-side but show generic messages to users",
+                    "importance": "High",
+                    "tags": ["error-handling", "security", "logging"]
+                },
+                {
+                    "id": "app_003",
+                    "title": "Security Headers",
+                    "tip": "Implement security headers like CSP, X-Frame-Options, and HSTS.",
+                    "explanation": "Security headers protect against various attacks including XSS, clickjacking, and protocol downgrade.",
+                    "example": "Set Content-Security-Policy and X-Frame-Options: DENY",
+                    "importance": "High",
+                    "tags": ["headers", "web-security", "configuration"]
+                }
+            ],
+            "data_security": [
+                {
+                    "id": "data_001",
+                    "title": "Data Encryption",
+                    "tip": "Always encrypt sensitive data both in transit and at rest.",
+                    "explanation": "Data encryption protects against unauthorized access and data breaches.",
+                    "example": "Use AES-256 for data at rest and TLS 1.3 for data in transit",
+                    "importance": "Critical",
+                    "tags": ["encryption", "data-protection", "security"]
+                },
+                {
+                    "id": "data_002",
+                    "title": "Backup Strategy",
+                    "tip": "Implement the 3-2-1 backup strategy for critical data.",
+                    "explanation": "Keep 3 copies of data on 2 different media types with 1 copy off-site.",
+                    "example": "Main storage + local backup + cloud backup with encryption",
+                    "importance": "High",
+                    "tags": ["backup", "disaster-recovery", "data-protection"]
+                },
+                {
+                    "id": "data_003",
+                    "title": "Data Minimization",
+                    "tip": "Only collect and retain necessary data. Regularly purge unnecessary data.",
+                    "explanation": "Minimizing data reduces risk and compliance requirements.",
+                    "example": "Implement data retention policies and automatic purging",
+                    "importance": "High",
+                    "tags": ["privacy", "data-protection", "compliance"]
+                }
+            ],
+            "cloud_security": [
+                {
+                    "id": "cloud_001",
+                    "title": "Cloud IAM",
+                    "tip": "Follow least privilege principle in cloud IAM policies.",
+                    "explanation": "Strict IAM policies minimize the impact of compromised credentials.",
+                    "example": "Grant read-only access unless write is needed",
+                    "importance": "Critical",
+                    "tags": ["cloud", "iam", "access-control"]
+                },
+                {
+                    "id": "cloud_002",
+                    "title": "Cloud Storage",
+                    "tip": "Encrypt sensitive data before uploading to cloud storage.",
+                    "explanation": "Client-side encryption provides additional protection for cloud-stored data.",
+                    "example": "Use envelope encryption with customer-managed keys",
+                    "importance": "High",
+                    "tags": ["cloud", "storage", "encryption"]
+                }
+            ],
+            "incident_response": [
+                {
+                    "id": "ir_001",
+                    "title": "Incident Logging",
+                    "tip": "Maintain detailed security incident logs with timestamps.",
+                    "explanation": "Good incident logs are crucial for investigation and response.",
+                    "example": "Log source IP, user agent, and affected resources",
+                    "importance": "High",
+                    "tags": ["logging", "incident-response", "forensics"]
+                },
+                {
+                    "id": "ir_002",
+                    "title": "Backup Verification",
+                    "tip": "Regularly test backup restoration procedures.",
+                    "explanation": "Verified backups are essential for disaster recovery.",
+                    "example": "Monthly restore tests in isolated environment",
+                    "importance": "High",
+                    "tags": ["backup", "disaster-recovery", "testing"]
+                }
+            ],
+            "web_security": [
+                {
+                    "id": "web_001",
+                    "title": "XSS Prevention",
+                    "tip": "Use Content Security Policy (CSP) headers.",
+                    "explanation": "CSP prevents XSS by controlling resource loading.",
+                    "example": "Set default-src 'self' and script-src restrictions",
+                    "importance": "Critical",
+                    "tags": ["xss", "csp", "web-security"]
+                },
+                {
+                    "id": "web_002",
+                    "title": "CSRF Protection",
+                    "tip": "Implement CSRF tokens for all state-changing operations.",
+                    "explanation": "CSRF tokens prevent cross-site request forgery attacks.",
+                    "example": "Include csrf_token in forms and AJAX headers",
+                    "importance": "High",
+                    "tags": ["csrf", "web-security", "forms"]
+                },
+                {
+                    "id": "web_003",
+                    "title": "SQL Injection",
+                    "tip": "Use parameterized queries for all database operations.",
+                    "explanation": "Parameterized queries prevent SQL injection attacks.",
+                    "example": "Use prepared statements or ORM with proper escaping",
+                    "importance": "Critical",
+                    "tags": ["sql", "injection", "database"]
+                },
+                {
+                    "id": "web_004",
+                    "title": "File Upload",
+                    "tip": "Validate and sanitize all file uploads.",
+                    "explanation": "File upload validation prevents malicious file attacks.",
+                    "example": "Check file type, size, and scan for malware",
+                    "importance": "High",
+                    "tags": ["upload", "validation", "security"]
+                }
+            ],
+            "encryption": [
+                {
+                    "id": "crypto_001",
+                    "title": "Key Management",
+                    "tip": "Implement proper encryption key management and rotation.",
+                    "explanation": "Good key management is crucial for data security.",
+                    "example": "Rotate encryption keys every 90 days",
+                    "importance": "Critical",
+                    "tags": ["encryption", "keys", "security"]
+                },
+                {
+                    "id": "crypto_002",
+                    "title": "Secure Random",
+                    "tip": "Use cryptographically secure random number generators.",
+                    "explanation": "Secure RNG is essential for tokens and keys.",
+                    "example": "Use /dev/urandom or crypto.getRandomValues()",
+                    "importance": "High",
+                    "tags": ["random", "crypto", "security"]
+                },
+                {
+                    "id": "crypto_003",
+                    "title": "TLS Configuration",
+                    "tip": "Use secure TLS configuration with modern ciphers.",
+                    "explanation": "Proper TLS config ensures secure communications.",
+                    "example": "Enable TLS 1.3 and disable weak ciphers",
+                    "importance": "Critical",
+                    "tags": ["tls", "encryption", "security"]
+                },
+                {
+                    "id": "crypto_004",
+                    "title": "Data Encryption",
+                    "tip": "Use AES-256-GCM for symmetric encryption.",
+                    "explanation": "AES-GCM provides both confidentiality and authenticity.",
+                    "example": "Use authenticated encryption with proper key management",
+                    "importance": "High",
+                    "tags": ["encryption", "aes", "security"]
+                }
+            ],
+            "mobile_security": [
+                {
+                    "id": "mobile_003",
+                    "title": "App Transport",
+                    "tip": "Implement certificate pinning in mobile apps.",
+                    "explanation": "Certificate pinning prevents MITM attacks.",
+                    "example": "Pin the expected certificate or public key hash",
+                    "importance": "High",
+                    "tags": ["mobile", "network", "security"]
+                },
+                {
+                    "id": "mobile_004",
+                    "title": "Data Protection",
+                    "tip": "Use platform security features for sensitive data.",
+                    "explanation": "Platform security features provide better protection.",
+                    "example": "Use Keychain (iOS) or KeyStore (Android)",
+                    "importance": "High",
+                    "tags": ["mobile", "data", "security"]
+                }
+            ],
+            "compliance": [
+                {
+                    "id": "comp_001",
+                    "title": "Data Privacy",
+                    "tip": "Implement GDPR and privacy compliance measures.",
+                    "explanation": "Privacy compliance protects user data and avoids fines.",
+                    "example": "Implement data deletion and export features",
+                    "importance": "High",
+                    "tags": ["privacy", "compliance", "gdpr"]
+                },
+                {
+                    "id": "comp_002",
+                    "title": "Audit Logging",
+                    "tip": "Maintain comprehensive audit logs for sensitive operations.",
+                    "explanation": "Audit logs are crucial for compliance and investigation.",
+                    "example": "Log all admin actions with user and timestamp",
+                    "importance": "High",
+                    "tags": ["audit", "logging", "compliance"]
+                }
+            ],
+            "api_security": [
+                {
+                    "id": "api_003",
+                    "title": "API Authentication",
+                    "tip": "Use proper API authentication mechanisms.",
+                    "explanation": "API authentication prevents unauthorized access.",
+                    "example": "Use OAuth 2.0 or API keys with rate limiting",
+                    "importance": "Critical",
+                    "tags": ["api", "authentication", "security"]
+                },
+                {
+                    "id": "api_004",
+                    "title": "API Versioning",
+                    "tip": "Implement proper API versioning strategy.",
+                    "explanation": "API versioning allows smooth updates and changes.",
+                    "example": "Use URL versioning (v1/api) or headers",
+                    "importance": "High",
+                    "tags": ["api", "versioning", "maintenance"]
+                }
+            ],
+            "common_patterns": [
+                {
+                    "id": "pattern_001",
+                    "title": "Hidden File Extensions",
+                    "tip": "If you see a file named 'document.txt.exe', it's likely malware hiding as a text file.",
+                    "explanation": "Windows hides known file extensions by default. Attackers use this to make malware look like harmless files.",
+                    "example": "'invoice.pdf.exe' appears as 'invoice.pdf' but is actually malware",
+                    "importance": "High",
+                    "tags": ["malware", "files", "security"]
+                },
+                {
+                    "id": "pattern_002",
+                    "title": "Suspicious URLs",
+                    "tip": "If a URL has numbers replacing letters (like g00gle instead of google), it's likely phishing.",
+                    "explanation": "Phishers often use similar-looking characters to mimic legitimate domains.",
+                    "example": "paypa1.com (using number 1) instead of paypal.com",
+                    "importance": "High",
+                    "tags": ["phishing", "web", "security"]
+                },
+                {
+                    "id": "pattern_003",
+                    "title": "SQL Injection Pattern",
+                    "tip": "If you see ' OR '1'='1 in user input, it's likely an SQL injection attempt.",
+                    "explanation": "This pattern tries to make SQL queries always return true.",
+                    "example": "username: admin' OR '1'='1",
+                    "importance": "Critical",
+                    "tags": ["sql", "injection", "security"]
+                }
+            ],
+            "daily_practices": [
+                {
+                    "id": "daily_001",
+                    "title": "Lock Screen Habit",
+                    "tip": "Always lock your screen when stepping away, even for a minute. Use Win+L or Cmd+Ctrl+Q.",
+                    "explanation": "An unlocked computer is an easy target for unauthorized access.",
+                    "example": "Make it a habit: Stand up = Lock screen",
+                    "importance": "High",
+                    "tags": ["physical", "security", "habits"]
+                },
+                {
+                    "id": "daily_002",
+                    "title": "Email Links",
+                    "tip": "Hover over links before clicking to see the real URL.",
+                    "explanation": "Phishing emails often hide malicious URLs behind legitimate-looking text.",
+                    "example": "Text shows 'paypal.com' but link is 'malicious.com'",
+                    "importance": "High",
+                    "tags": ["email", "phishing", "security"]
+                }
+            ],
+            "warning_signs": [
+                {
+                    "id": "warn_001",
+                    "title": "Phishing Email Signs",
+                    "tip": "Watch for urgency, poor grammar, and generic greetings like 'Dear Sir'.",
+                    "explanation": "Phishing emails often create false urgency and contain language errors.",
+                    "example": "Urgent: Your account will be suspended in 24 hours!",
+                    "importance": "High",
+                    "tags": ["phishing", "email", "security"]
+                },
+                {
+                    "id": "warn_002",
+                    "title": "Malware Behavior Signs",
+                    "tip": "Watch for unexpected pop-ups, slow performance, or strange network activity.",
+                    "explanation": "These are common signs of malware infection.",
+                    "example": "Browser keeps redirecting to unknown sites",
+                    "importance": "High",
+                    "tags": ["malware", "detection", "security"]
+                }
+            ]
+        },
+        "programming": {
+            "code_quality": [
+                {
+                    "id": "code_001",
+                    "title": "Clean Code Principles",
+                    "tip": "Write self-documenting code with clear variable and function names.",
+                    "explanation": "Clean code is easier to maintain, debug, and understand by other developers.",
+                    "example": "Use getUserById() instead of getById() for clarity",
+                    "importance": "High",
+                    "tags": ["clean-code", "best-practices", "maintainability"]
+                },
+                {
+                    "id": "code_002",
+                    "title": "DRY Principle",
+                    "tip": "Don't Repeat Yourself - Extract common functionality into reusable functions.",
+                    "explanation": "Code duplication leads to maintenance issues and increases the chance of bugs.",
+                    "example": "Create utility functions for commonly used operations",
+                    "importance": "Medium",
+                    "tags": ["dry", "best-practices", "maintainability"]
+                },
+                {
+                    "id": "code_003",
+                    "title": "SOLID Principles",
+                    "tip": "Follow SOLID principles for better object-oriented design.",
+                    "explanation": "SOLID principles lead to more maintainable and flexible code.",
+                    "example": "Single Responsibility: Each class should have one reason to change",
+                    "importance": "High",
+                    "tags": ["solid", "design", "oop"]
+                },
+                {
+                    "id": "code_004",
+                    "title": "Code Reviews",
+                    "tip": "Conduct thorough code reviews focusing on security and quality.",
+                    "explanation": "Code reviews catch bugs and security issues early.",
+                    "example": "Use pull request templates with security checklist",
+                    "importance": "High",
+                    "tags": ["code-review", "quality", "security"]
+                },
+                {
+                    "id": "code_005",
+                    "title": "Documentation",
+                    "tip": "Document security-critical code and configuration.",
+                    "explanation": "Good documentation helps maintain security standards.",
+                    "example": "Document encryption key rotation procedures",
+                    "importance": "High",
+                    "tags": ["documentation", "security", "maintenance"]
+                },
+                {
+                    "id": "code_006",
+                    "title": "Code Comments",
+                    "tip": "Write meaningful comments explaining why, not what.",
+                    "explanation": "Good comments explain complex logic and decisions.",
+                    "example": "Document business rules and edge cases",
+                    "importance": "Medium",
+                    "tags": ["documentation", "maintainability", "code"]
+                },
+                {
+                    "id": "code_007",
+                    "title": "Code Formatting",
+                    "tip": "Use consistent code formatting and style.",
+                    "explanation": "Consistent style improves readability and maintenance.",
+                    "example": "Use automated formatters like prettier or black",
+                    "importance": "Medium",
+                    "tags": ["formatting", "style", "maintainability"]
+                }
+            ],
+            "performance": [
+                {
+                    "id": "perf_001",
+                    "title": "Database Optimization",
+                    "tip": "Use proper indexing and avoid N+1 query problems.",
+                    "explanation": "Efficient database queries are crucial for application performance.",
+                    "example": "Use JOIN instead of multiple separate queries",
+                    "importance": "High",
+                    "tags": ["database", "performance", "optimization"]
+                },
+                {
+                    "id": "perf_002",
+                    "title": "Caching Strategy",
+                    "tip": "Implement appropriate caching for frequently accessed data.",
+                    "explanation": "Caching reduces database load and improves response times.",
+                    "example": "Use Redis for session storage and frequent queries",
+                    "importance": "High",
+                    "tags": ["caching", "performance", "optimization"]
+                },
+                {
+                    "id": "perf_003",
+                    "title": "Asynchronous Processing",
+                    "tip": "Use async processing for long-running tasks.",
+                    "explanation": "Async processing improves user experience and application responsiveness.",
+                    "example": "Use message queues for email sending and report generation",
+                    "importance": "Medium",
+                    "tags": ["async", "performance", "scalability"]
+                },
+                {
+                    "id": "perf_004",
+                    "title": "Load Testing",
+                    "tip": "Conduct regular load testing of applications.",
+                    "explanation": "Load testing identifies performance bottlenecks.",
+                    "example": "Use tools like k6 or JMeter for load testing",
+                    "importance": "High",
+                    "tags": ["testing", "performance", "scalability"]
+                },
+                {
+                    "id": "perf_005",
+                    "title": "Resource Pooling",
+                    "tip": "Implement resource pooling for expensive resources.",
+                    "explanation": "Resource pools improve performance and reliability.",
+                    "example": "Use connection pools for databases and HTTP clients",
+                    "importance": "High",
+                    "tags": ["performance", "resources", "optimization"]
+                }
+            ],
+            "testing": [
+                {
+                    "id": "test_001",
+                    "title": "Unit Testing",
+                    "tip": "Write comprehensive unit tests for critical business logic.",
+                    "explanation": "Unit tests catch bugs early and document expected behavior.",
+                    "example": "Test each function's success and error cases",
+                    "importance": "High",
+                    "tags": ["testing", "quality", "maintenance"]
+                },
+                {
+                    "id": "test_002",
+                    "title": "Integration Testing",
+                    "tip": "Write integration tests for component interactions.",
+                    "explanation": "Integration tests verify that components work together correctly.",
+                    "example": "Test API endpoints with database interactions",
+                    "importance": "High",
+                    "tags": ["testing", "integration", "quality"]
+                },
+                {
+                    "id": "test_003",
+                    "title": "Test Coverage",
+                    "tip": "Aim for high test coverage of critical code paths.",
+                    "explanation": "Good test coverage ensures reliability and makes refactoring safer.",
+                    "example": "Use coverage tools to identify untested code",
+                    "importance": "Medium",
+                    "tags": ["testing", "coverage", "quality"]
+                },
+                {
+                    "id": "test_004",
+                    "title": "Security Testing",
+                    "tip": "Include security tests in test suite.",
+                    "explanation": "Security tests help prevent vulnerabilities.",
+                    "example": "Test for XSS, CSRF, and SQL injection",
+                    "importance": "High",
+                    "tags": ["testing", "security", "quality"]
+                },
+                {
+                    "id": "test_005",
+                    "title": "Performance Testing",
+                    "tip": "Include performance benchmarks in tests.",
+                    "explanation": "Performance tests catch slowdowns early.",
+                    "example": "Test response times and resource usage",
+                    "importance": "High",
+                    "tags": ["testing", "performance", "quality"]
+                }
+            ],
+            "architecture": [
+                {
+                    "id": "arch_001",
+                    "title": "Microservices Design",
+                    "tip": "Design microservices around business capabilities.",
+                    "explanation": "Well-designed microservices are independently deployable and scalable.",
+                    "example": "Separate user service, order service, and payment service",
+                    "importance": "High",
+                    "tags": ["microservices", "architecture", "design"]
+                },
+                {
+                    "id": "arch_002",
+                    "title": "API Design",
+                    "tip": "Design RESTful APIs with clear resource naming.",
+                    "explanation": "Good API design makes integration easier and reduces errors.",
+                    "example": "Use /users/{id}/orders instead of /getOrdersForUser",
+                    "importance": "High",
+                    "tags": ["api", "rest", "design"]
+                },
+                {
+                    "id": "arch_003",
+                    "title": "Event-Driven Architecture",
+                    "tip": "Use events for loose coupling between services.",
+                    "explanation": "Event-driven architecture improves scalability and flexibility.",
+                    "example": "Publish events for order status changes",
+                    "importance": "Medium",
+                    "tags": ["events", "architecture", "design"]
+                }
+            ],
+            "devops": [
+                {
+                    "id": "devops_001",
+                    "title": "CI/CD Security",
+                    "tip": "Implement security scanning in CI/CD pipelines.",
+                    "explanation": "Automated security checks prevent vulnerable code deployment.",
+                    "example": "Run SAST and dependency scanning in pipeline",
+                    "importance": "High",
+                    "tags": ["cicd", "security", "automation"]
+                },
+                {
+                    "id": "devops_002",
+                    "title": "Container Security",
+                    "tip": "Use minimal base images and scan containers for vulnerabilities.",
+                    "explanation": "Minimal images reduce attack surface and vulnerability risk.",
+                    "example": "Use distroless or alpine base images",
+                    "importance": "High",
+                    "tags": ["containers", "docker", "security"]
+                }
+            ],
+            "api_development": [
+                {
+                    "id": "api_001",
+                    "title": "API Versioning",
+                    "tip": "Implement proper API versioning from the start.",
+                    "explanation": "Good versioning allows smooth API evolution.",
+                    "example": "Use /v1/resource in URL or Accept header",
+                    "importance": "Medium",
+                    "tags": ["api", "versioning", "design"]
+                },
+                {
+                    "id": "api_002",
+                    "title": "API Documentation",
+                    "tip": "Maintain up-to-date API documentation with examples.",
+                    "explanation": "Good documentation improves API adoption and reduces errors.",
+                    "example": "Use OpenAPI/Swagger for interactive docs",
+                    "importance": "High",
+                    "tags": ["api", "documentation", "design"]
+                }
+            ],
+            "mobile_development": [
+                {
+                    "id": "mobile_001",
+                    "title": "Mobile Security",
+                    "tip": "Implement certificate pinning for mobile APIs.",
+                    "explanation": "Certificate pinning prevents man-in-the-middle attacks.",
+                    "example": "Pin the expected certificate or public key",
+                    "importance": "High",
+                    "tags": ["mobile", "security", "api"]
+                },
+                {
+                    "id": "mobile_002",
+                    "title": "Secure Storage",
+                    "tip": "Use secure storage for sensitive mobile app data.",
+                    "explanation": "Secure storage protects user credentials and tokens.",
+                    "example": "Use Keychain (iOS) or KeyStore (Android)",
+                    "importance": "High",
+                    "tags": ["mobile", "storage", "security"]
+                }
+            ],
+            "error_handling": [
+                {
+                    "id": "err_001",
+                    "title": "Exception Handling",
+                    "tip": "Implement proper exception handling with logging.",
+                    "explanation": "Good error handling improves reliability.",
+                    "example": "Log stack traces but show user-friendly messages",
+                    "importance": "High",
+                    "tags": ["errors", "logging", "reliability"]
+                },
+                {
+                    "id": "err_002",
+                    "title": "Validation Errors",
+                    "tip": "Return clear validation error messages.",
+                    "explanation": "Clear error messages help users fix input issues.",
+                    "example": "Specify which field failed and why",
+                    "importance": "Medium",
+                    "tags": ["validation", "ux", "errors"]
+                },
+                {
+                    "id": "err_003",
+                    "title": "Logging Strategy",
+                    "tip": "Implement structured logging with proper levels.",
+                    "explanation": "Structured logging improves debugging and monitoring.",
+                    "example": "Use JSON logging with context information",
+                    "importance": "High",
+                    "tags": ["logging", "monitoring", "debugging"]
+                },
+                {
+                    "id": "err_004",
+                    "title": "Error Recovery",
+                    "tip": "Implement graceful degradation for errors.",
+                    "explanation": "Graceful degradation improves user experience.",
+                    "example": "Show cached data when API calls fail",
+                    "importance": "Medium",
+                    "tags": ["errors", "ux", "reliability"]
+                }
+            ],
+            "database": [
+                {
+                    "id": "db_001",
+                    "title": "Connection Pooling",
+                    "tip": "Use connection pooling for database connections.",
+                    "explanation": "Connection pools improve performance and reliability.",
+                    "example": "Configure max pool size based on workload",
+                    "importance": "High",
+                    "tags": ["database", "performance", "reliability"]
+                },
+                {
+                    "id": "db_002",
+                    "title": "Query Optimization",
+                    "tip": "Use EXPLAIN to analyze and optimize queries.",
+                    "explanation": "Query optimization is crucial for performance.",
+                    "example": "Analyze query plans and add necessary indexes",
+                    "importance": "High",
+                    "tags": ["database", "performance", "optimization"]
+                },
+                {
+                    "id": "db_003",
+                    "title": "Database Indexing",
+                    "tip": "Create proper indexes for frequent queries.",
+                    "explanation": "Good indexing strategy improves query performance.",
+                    "example": "Analyze query patterns and create composite indexes",
+                    "importance": "High",
+                    "tags": ["database", "performance", "indexing"]
+                },
+                {
+                    "id": "db_004",
+                    "title": "Data Integrity",
+                    "tip": "Use transactions for data consistency.",
+                    "explanation": "Transactions ensure data integrity in complex operations.",
+                    "example": "Wrap related operations in a transaction",
+                    "importance": "High",
+                    "tags": ["database", "transactions", "integrity"]
+                }
+            ],
+            "code_organization": [
+                {
+                    "id": "org_001",
+                    "title": "Project Structure",
+                    "tip": "Organize code into logical modules and layers.",
+                    "explanation": "Good structure improves maintainability.",
+                    "example": "Separate business logic, data access, and API layers",
+                    "importance": "High",
+                    "tags": ["organization", "architecture", "maintainability"]
+                },
+                {
+                    "id": "org_002",
+                    "title": "Configuration Management",
+                    "tip": "Externalize configuration from code.",
+                    "explanation": "External config allows easy environment changes.",
+                    "example": "Use environment variables or config files",
+                    "importance": "High",
+                    "tags": ["configuration", "deployment", "maintenance"]
+                }
+            ],
+            "deployment": [
+                {
+                    "id": "deploy_001",
+                    "title": "Deployment Strategy",
+                    "tip": "Implement zero-downtime deployments.",
+                    "explanation": "Zero-downtime deployments prevent service interruption.",
+                    "example": "Use blue-green or rolling deployments",
+                    "importance": "High",
+                    "tags": ["deployment", "devops", "reliability"]
+                },
+                {
+                    "id": "deploy_002",
+                    "title": "Configuration Management",
+                    "tip": "Use environment-specific configuration management.",
+                    "explanation": "Proper config management prevents environment issues.",
+                    "example": "Use environment variables or config files",
+                    "importance": "High",
+                    "tags": ["configuration", "deployment", "devops"]
+                }
+            ],
+            "monitoring": [
+                {
+                    "id": "mon_001",
+                    "title": "Application Monitoring",
+                    "tip": "Implement comprehensive application monitoring.",
+                    "explanation": "Monitoring helps detect and diagnose issues.",
+                    "example": "Use APM tools and custom metrics",
+                    "importance": "High",
+                    "tags": ["monitoring", "observability", "maintenance"]
+                },
+                {
+                    "id": "mon_002",
+                    "title": "Health Checks",
+                    "tip": "Implement health check endpoints.",
+                    "explanation": "Health checks help detect service issues.",
+                    "example": "Create /health endpoint with dependency checks",
+                    "importance": "High",
+                    "tags": ["monitoring", "health", "reliability"]
+                }
+            ],
+            "documentation": [
+                {
+                    "id": "doc_001",
+                    "title": "API Documentation",
+                    "tip": "Maintain up-to-date API documentation.",
+                    "explanation": "Good documentation improves API usability.",
+                    "example": "Use OpenAPI/Swagger for REST APIs",
+                    "importance": "High",
+                    "tags": ["documentation", "api", "maintenance"]
+                },
+                {
+                    "id": "doc_002",
+                    "title": "Code Documentation",
+                    "tip": "Document complex logic and business rules.",
+                    "explanation": "Documentation helps maintain complex code.",
+                    "example": "Document edge cases and assumptions",
+                    "importance": "Medium",
+                    "tags": ["documentation", "code", "maintenance"]
+                }
+            ],
+            "common_issues": [
+                {
+                    "id": "issue_001",
+                    "title": "Memory Leak Signs",
+                    "tip": "Watch for gradually increasing memory usage over time.",
+                    "explanation": "Memory leaks often show up as slowly growing memory consumption that never decreases.",
+                    "example": "Monitor heap usage and look for upward trends",
+                    "importance": "High",
+                    "tags": ["memory", "debugging", "performance"]
+                },
+                {
+                    "id": "issue_002",
+                    "title": "Race Condition Signs",
+                    "tip": "Look for intermittent failures that only occur under load.",
+                    "explanation": "Race conditions often manifest as random failures that are hard to reproduce.",
+                    "example": "Test fails randomly when running parallel tests",
+                    "importance": "High",
+                    "tags": ["concurrency", "debugging", "reliability"]
+                }
+            ],
+            "debugging_tips": [
+                {
+                    "id": "debug_001",
+                    "title": "Console Patterns",
+                    "tip": "Use console.log with unique prefixes for easier debugging.",
+                    "explanation": "Unique prefixes help track the flow of execution in logs.",
+                    "example": "console.log('[UserService]', 'User created:', userId)",
+                    "importance": "Medium",
+                    "tags": ["debugging", "logging", "development"]
+                },
+                {
+                    "id": "debug_002",
+                    "title": "Git Bisect",
+                    "tip": "Use git bisect to find commits that introduced bugs.",
+                    "explanation": "Git bisect performs binary search through commit history.",
+                    "example": "git bisect start && git bisect bad && git bisect good v1.0",
+                    "importance": "High",
+                    "tags": ["git", "debugging", "tools"]
+                }
+            ],
+            "code_smells": [
+                {
+                    "id": "smell_001",
+                    "title": "Long Method Sign",
+                    "tip": "Methods longer than one screen usually need refactoring.",
+                    "explanation": "Long methods are hard to understand and maintain. They often do too many things.",
+                    "example": "Break long methods into smaller, focused functions",
+                    "importance": "Medium",
+                    "tags": ["refactoring", "clean-code", "maintenance"]
+                },
+                {
+                    "id": "smell_002",
+                    "title": "Magic Number Sign",
+                    "tip": "Watch for unexplained numbers in code.",
+                    "explanation": "Magic numbers make code harder to understand and maintain.",
+                    "example": "Replace timeout=300000 with FIVE_MINUTES_MS=300000",
+                    "importance": "Medium",
+                    "tags": ["clean-code", "maintenance", "readability"]
+                }
+            ],
+            "common_signs": [
+                {
+                    "id": "signs_001",
+                    "title": "Callback Hell Sign",
+                    "tip": "If you see multiple nested callbacks forming a pyramid shape, it needs refactoring.",
+                    "explanation": "Deeply nested callbacks are hard to maintain and debug.",
+                    "example": "Use async/await or Promises instead of nested callbacks",
+                    "importance": "Medium",
+                    "tags": ["javascript", "async", "patterns"]
+                },
+                {
+                    "id": "signs_002",
+                    "title": "Copy-Paste Code Sign",
+                    "tip": "If you're copying code more than twice, it should be a function.",
+                    "explanation": "Duplicated code increases maintenance burden and bug risk.",
+                    "example": "Extract common logic into a shared utility function",
+                    "importance": "Medium",
+                    "tags": ["dry", "refactoring", "patterns"]
+                }
+            ],
+            "quick_fixes": [
+                {
+                    "id": "fix_001",
+                    "title": "Undefined is not a function",
+                    "tip": "When you see 'undefined is not a function', check if the object exists before calling methods.",
+                    "explanation": "This common JavaScript error occurs when trying to call a method on undefined.",
+                    "example": "Use optional chaining: object?.method() or check if(object)",
+                    "importance": "Medium",
+                    "tags": ["javascript", "errors", "debugging"]
+                },
+                {
+                    "id": "fix_002",
+                    "title": "CORS Error Fix",
+                    "tip": "If you see 'Access-Control-Allow-Origin' error, check both client and server configuration.",
+                    "explanation": "CORS errors occur when browser security blocks cross-origin requests.",
+                    "example": "Add correct CORS headers on server or use proxy in development",
+                    "importance": "High",
+                    "tags": ["web", "cors", "debugging"]
+                },
+                {
+                    "id": "fix_003",
+                    "title": "NPM Issues Fix",
+                    "tip": "For npm dependency issues, try clearing cache and node_modules.",
+                    "explanation": "Cached or corrupted dependencies often cause npm issues.",
+                    "example": "rm -rf node_modules && npm cache clean && npm install",
+                    "importance": "Medium",
+                    "tags": ["npm", "dependencies", "debugging"]
+                }
+            ],
+            "git_practices": [
+                {
+                    "id": "git_001",
+                    "title": "Git Commit Messages",
+                    "tip": "Start commit messages with add:, fix:, update:, or remove: for clarity.",
+                    "explanation": "Consistent commit message format makes history more readable.",
+                    "example": "fix: resolve undefined error in user service",
+                    "importance": "Medium",
+                    "tags": ["git", "collaboration", "practices"]
+                },
+                {
+                    "id": "git_002",
+                    "title": "Git Branch Naming",
+                    "tip": "Use feature/, bugfix/, or hotfix/ prefixes in branch names.",
+                    "explanation": "Clear branch naming helps team understand changes without checking code.",
+                    "example": "feature/add-user-authentication",
+                    "importance": "Medium",
+                    "tags": ["git", "collaboration", "practices"]
+                }
+            ],
+            "debugging_signs": [
+                {
+                    "id": "debug_001",
+                    "title": "Memory Leak Signs",
+                    "tip": "If performance degrades over time but improves after restart, suspect memory leaks.",
+                    "explanation": "Memory leaks cause gradual performance degradation.",
+                    "example": "Application gets slower until restarted",
+                    "importance": "High",
+                    "tags": ["memory", "performance", "debugging"]
+                },
+                {
+                    "id": "debug_002",
+                    "title": "Race Condition Signs",
+                    "tip": "If bugs only appear under load or randomly, suspect race conditions.",
+                    "explanation": "Race conditions cause intermittent failures that are hard to reproduce.",
+                    "example": "Test passes locally but fails in CI",
+                    "importance": "High",
+                    "tags": ["concurrency", "debugging", "testing"]
+                }
+            ]
+        }
+    }
+} 
