@@ -685,9 +685,8 @@ class TelegramBot:
                 # Wait 24 hours before starting scheduled tasks
                 logger.info("First run detected - setting up 24 hour delay before scheduled tasks")
                 await asyncio.sleep(86400)  # 24 hours (86400 seconds) before starting scheduled tasks
-        else:
+            else:
                 logger.info("Not first run - skipping introduction")
-                
         except Exception as e:
             logger.error(f"Error in first time setup: {e}")
 
