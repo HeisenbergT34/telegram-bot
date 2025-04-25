@@ -2346,8 +2346,8 @@ class TelegramBot:
                     f"*Your answer:*\n{user_answer}\n\n"
                     f"Since this is an open-ended challenge, there's no automatic grading.\n"
                     f"Consider the following key points:\n\n"
-                    f"{challenge.get('key_points', '• Think about security implications\n• Consider different approaches')}\n\n"
-                    f"Select an option below to continue:",
+                    "{}\n\n"
+                    "Select an option below to continue:".format(challenge.get('key_points', '• Think about security implications\n• Consider different approaches')),
                     parse_mode=ParseMode.MARKDOWN,
                     reply_markup=InlineKeyboardMarkup(keyboard)
                 )
