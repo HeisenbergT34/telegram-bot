@@ -667,24 +667,48 @@ class TelegramBot:
                     "#KTechSomali #CodingCommunity"
                 )
                 
+                success = False
                 for group_id in config.TARGET_GROUPS:
                     try:
+                        # First check if bot is member of the group
+                        try:
+                            chat = await self.application.bot.get_chat(group_id)
+                            bot_member = await chat.get_member(self.application.bot.id)
+                            if bot_member.status not in ['administrator', 'member']:
+                                logger.error(f"Bot is not a member of group {group_id}")
+                                continue
+                        except Exception as e:
+                            logger.error(f"Failed to check bot membership in group {group_id}: {e}")
+                            continue
+                            
                         await self.application.bot.send_message(
                             chat_id=group_id,
                             text=intro_message,
                             parse_mode=ParseMode.MARKDOWN
                         )
                         logger.info(f"Sent introduction message to group {group_id}")
+                        success = True
+                    except telegram.error.Forbidden as e:
+                        logger.error(f"Bot lacks permission to send messages to group {group_id}: {e}")
+                    except telegram.error.BadRequest as e:
+                        if "chat not found" in str(e).lower():
+                            logger.error(f"Group {group_id} not found. Please add the bot to the group first.")
+                        else:
+                            logger.error(f"Failed to send introduction to group {group_id}: {e}")
                     except Exception as e:
                         logger.error(f"Failed to send introduction to group {group_id}: {e}")
                 
-                # Create the first run file to indicate introduction has been sent
-                with open(first_run_file, 'w') as f:
-                    f.write(str(datetime.now()))
-                
-                # Wait 24 hours before starting scheduled tasks
-                logger.info("First run detected - setting up 24 hour delay before scheduled tasks")
-                await asyncio.sleep(86400)  # 24 hours (86400 seconds) before starting scheduled tasks
+                # Only create first run file if at least one message was sent successfully
+                if success:
+                    # Create the first run file to indicate introduction has been sent
+                    with open(first_run_file, 'w') as f:
+                        f.write(str(datetime.now()))
+                    
+                    # Wait 24 hours before starting scheduled tasks
+                    logger.info("First run detected - setting up 24 hour delay before scheduled tasks")
+                    await asyncio.sleep(86400)  # 24 hours (86400 seconds) before starting scheduled tasks
+                else:
+                    logger.error("Failed to send introduction to any groups. Please check group IDs and bot permissions.")
             else:
                 logger.info("Not first run - skipping introduction")
         except Exception as e:
