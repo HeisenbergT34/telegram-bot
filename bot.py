@@ -407,8 +407,8 @@ class CustomMessageHandler:
                 "2. Contact an admin to post the link for you\n"
                 "3. Use private messaging for sharing links"
             )
-                
-                return False, ""
+        
+        return False, ""
 
     async def moderate_message(self, message: Message) -> tuple[bool, str]:
         """
@@ -425,17 +425,17 @@ class CustomMessageHandler:
         # Skip moderation of media types if needed
         if message.photo and hasattr(config, 'ALLOW_IMAGES') and config.ALLOW_IMAGES:
             logger.info("Allowing photo as per configuration")
-                        return False, ""
+            return False, ""
                 
         if message.video and hasattr(config, 'ALLOW_VIDEOS') and config.ALLOW_VIDEOS:
             logger.info("Allowing video as per configuration")
-                    return False, ""
+            return False, ""
                 
         if message.document and hasattr(config, 'ALLOW_DOCUMENTS') and config.ALLOW_DOCUMENTS:
             logger.info("Allowing document as per configuration")
             return False, ""
 
-            # Check for unauthorized links
+        # Check for unauthorized links
         has_link, warning_message = await self.check_links(message)
         if has_link:
             # Add the user to a temporary warning list to avoid duplicate warnings
@@ -454,10 +454,9 @@ class CustomMessageHandler:
                 
                 # We'll let the TelegramBot class handle the actual sending of warnings
                 # since we now just return the warning message along with the delete flag
-            
                 return True, warning_message
 
-            return False, ""
+        return False, ""
 
     async def remove_from_warned(self, user_id: int, delay: int):
         """Remove a user from the recently warned list after a delay."""
@@ -686,9 +685,8 @@ class TelegramBot:
                 # Wait 24 hours before starting scheduled tasks
                 logger.info("First run detected - setting up 24 hour delay before scheduled tasks")
                 await asyncio.sleep(86400)  # 24 hours (86400 seconds) before starting scheduled tasks
-        else:
+            else:
                 logger.info("Not first run - skipping introduction")
-                
         except Exception as e:
             logger.error(f"Error in first time setup: {e}")
 
@@ -1180,30 +1178,30 @@ class TelegramBot:
             data_parts = query.data.split('_')
             # Handle special case of web_development
             if len(data_parts) >= 4 and data_parts[2] == 'web' and data_parts[3] == 'development':
-                    category = 'web_development'
+                category = 'web_development'
                 difficulty = data_parts[4]
-                else:
+            else:
                 category = data_parts[2]
                 difficulty = data_parts[3]
 
             # Get a challenge
-                    challenge = self.get_challenge(category, difficulty)
-                    
-                    if not challenge:
+            challenge = self.get_challenge(category, difficulty)
+            
+            if not challenge:
                 await query.edit_message_text("Sorry, couldn't load challenge. Please try again.")
                 return
-                    
-                    # Format message
-                    message = (
-                        f"🎯 <b>Coding Challenge</b>\n\n"
-                        f"<b>{html.escape(challenge['title'])}</b>\n\n"
-                        f"📝 <b>Description:</b>\n{html.escape(challenge['description'])}\n\n"
+            
+            # Format message
+            message = (
+                f"🎯 <b>Coding Challenge</b>\n\n"
+                f"<b>{html.escape(challenge['title'])}</b>\n\n"
+                f"📝 <b>Description:</b>\n{html.escape(challenge['description'])}\n\n"
                 f"Category: {html.escape(challenge.get('category', category).title())}\n"
-                        f"Difficulty: {difficulty.title()}\n"
+                f"Difficulty: {difficulty.title()}\n"
                 f"Points: {challenge.get('points', 10)}"
-                    )
+            )
 
-                    keyboard = [
+            keyboard = [
                 [
                     InlineKeyboardButton("💡 Show Hint", callback_data=f"challenge_hint_{difficulty}_{challenge.get('id', '0')}"),
                     InlineKeyboardButton("🇸🇴 Translate", callback_data=f"challenge_translate_{category}_{difficulty}_{challenge.get('id', '0')}")
@@ -1217,11 +1215,11 @@ class TelegramBot:
             # Store challenge in user_data for later
             context.user_data['current_challenge'] = challenge
 
-                    await query.edit_message_text(
-                        message,
-                        reply_markup=InlineKeyboardMarkup(keyboard),
-                        parse_mode=ParseMode.HTML
-                    )
+            await query.edit_message_text(
+                message,
+                reply_markup=InlineKeyboardMarkup(keyboard),
+                parse_mode=ParseMode.HTML
+            )
         except Exception as e:
             logger.error(f"Error in challenge difficulty handling: {e}")
             await query.edit_message_text(
@@ -1278,8 +1276,8 @@ class TelegramBot:
             
             # Load challenges from file
             try:
-            with open('resources/programming_challenges.json', 'r', encoding='utf-8') as f:
-                challenges = json.load(f)
+                with open('resources/programming_challenges.json', 'r', encoding='utf-8') as f:
+                    challenges = json.load(f)
             except Exception as e:
                 logger.error(f"Failed to load challenges file: {e}")
                 await self._safe_edit_message(query,
@@ -1299,9 +1297,9 @@ class TelegramBot:
             challenge = None
             if category in challenges and difficulty in challenges.get(category, {}):
                 for c in challenges[category][difficulty]:
-                if str(c.get('id')) == challenge_id:
-                    challenge = c
-                    break
+                    if str(c.get('id')) == challenge_id:
+                        challenge = c
+                        break
             
             if challenge and 'hint' in challenge:
                 # Format the hint message with HTML
@@ -1934,18 +1932,18 @@ class TelegramBot:
 
             # Use deep_translator for reliable translation
             try:
-                    translator = GoogleTranslator(source='en', target='so')
-                    translated_text = translator.translate(text)
+                translator = GoogleTranslator(source='en', target='so')
+                translated_text = translator.translate(text)
                 
                 # Post-process to make Somali more natural
-            if translated_text:
+                if translated_text:
                     # Common improvements for Somali translations
                     translated_text = self._improve_somali_text(translated_text)
                     
                     # Cache the improved translation
-                self.db_manager.cache_translation(text, translated_text)
-                return translated_text
-                    
+                    self.db_manager.cache_translation(text, translated_text)
+                    return translated_text
+                
                 return text
             except Exception as inner_e:
                 logger.error(f"Translation failed: {str(inner_e)}")
@@ -1954,7 +1952,7 @@ class TelegramBot:
         except Exception as e:
             logger.error(f"Translation error: {e}")
             return text
-            
+
     def _improve_somali_text(self, text: str) -> str:
         """Apply common corrections to make automatically translated Somali text more natural."""
         # Replace common awkward translations with more natural Somali phrases
@@ -2007,7 +2005,7 @@ class TelegramBot:
         # Fix common grammatical patterns in Somali
         text = re.sub(r'\b(waa in|waxa)\s+(\w+)\s+in\b', r'\1 \2 inuu', text)
         
-            return text
+        return text
 
     async def cleanup_translation_cache(self):
         """Clean up old translations from cache."""
@@ -2087,7 +2085,7 @@ class TelegramBot:
                     if str(challenge.get('id', '')) == challenge_id:
                         challenge['category'] = category  # Ensure category is included
                         challenge['difficulty'] = difficulty  # Ensure difficulty is included
-                return challenge
+                        return challenge
                 # If ID not found, get random
                 logger.warning(f"Challenge ID {challenge_id} not found, using random")
             
@@ -2348,8 +2346,8 @@ class TelegramBot:
                     f"*Your answer:*\n{user_answer}\n\n"
                     f"Since this is an open-ended challenge, there's no automatic grading.\n"
                     f"Consider the following key points:\n\n"
-                    f"{challenge.get('key_points', '• Think about security implications\n• Consider different approaches')}\n\n"
-                    f"Select an option below to continue:",
+                    "{}\n\n"
+                    "Select an option below to continue:".format(challenge.get('key_points', '• Think about security implications\n• Consider different approaches')),
                     parse_mode=ParseMode.MARKDOWN,
                     reply_markup=InlineKeyboardMarkup(keyboard)
                 )
@@ -2820,8 +2818,8 @@ async def main():
             # Check if process is still running (Windows-compatible way)
             import psutil
             if psutil.pid_exists(old_pid):
-            print(f"Bot is already running with PID {old_pid}")
-            sys.exit(1)
+                print(f"Bot is already running with PID {old_pid}")
+                sys.exit(1)
         except (OSError, ValueError, ImportError):
             # Process not running, PID file is invalid, or psutil not available
             pass
