@@ -1276,8 +1276,8 @@ class TelegramBot:
             
             # Load challenges from file
             try:
-            with open('resources/programming_challenges.json', 'r', encoding='utf-8') as f:
-                challenges = json.load(f)
+                with open('resources/programming_challenges.json', 'r', encoding='utf-8') as f:
+                    challenges = json.load(f)
             except Exception as e:
                 logger.error(f"Failed to load challenges file: {e}")
                 await self._safe_edit_message(query,
@@ -1297,9 +1297,9 @@ class TelegramBot:
             challenge = None
             if category in challenges and difficulty in challenges.get(category, {}):
                 for c in challenges[category][difficulty]:
-                if str(c.get('id')) == challenge_id:
-                    challenge = c
-                    break
+                    if str(c.get('id')) == challenge_id:
+                        challenge = c
+                        break
             
             if challenge and 'hint' in challenge:
                 # Format the hint message with HTML
@@ -1932,18 +1932,18 @@ class TelegramBot:
 
             # Use deep_translator for reliable translation
             try:
-                    translator = GoogleTranslator(source='en', target='so')
-                    translated_text = translator.translate(text)
+                translator = GoogleTranslator(source='en', target='so')
+                translated_text = translator.translate(text)
                 
                 # Post-process to make Somali more natural
-            if translated_text:
+                if translated_text:
                     # Common improvements for Somali translations
                     translated_text = self._improve_somali_text(translated_text)
                     
                     # Cache the improved translation
-                self.db_manager.cache_translation(text, translated_text)
-                return translated_text
-                    
+                    self.db_manager.cache_translation(text, translated_text)
+                    return translated_text
+                
                 return text
             except Exception as inner_e:
                 logger.error(f"Translation failed: {str(inner_e)}")
@@ -2005,7 +2005,7 @@ class TelegramBot:
         # Fix common grammatical patterns in Somali
         text = re.sub(r'\b(waa in|waxa)\s+(\w+)\s+in\b', r'\1 \2 inuu', text)
         
-            return text
+        return text
 
     async def cleanup_translation_cache(self):
         """Clean up old translations from cache."""
